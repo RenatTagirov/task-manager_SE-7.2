@@ -1,5 +1,7 @@
 package ru.tagirov.tm.entity;
 
+import java.util.Objects;
+
 public class Task{
 
     private String id;
@@ -67,4 +69,33 @@ public class Task{
         this.idProject = idProject;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return Objects.equals(id, task.id) &&
+                Objects.equals(name, task.name) &&
+                Objects.equals(description, task.description) &&
+                Objects.equals(dateCreate, task.dateCreate) &&
+                Objects.equals(dateUpdate, task.dateUpdate) &&
+                Objects.equals(idProject, task.idProject);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, dateCreate, dateUpdate, idProject);
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", dateCreate='" + dateCreate + '\'' +
+                ", dateUpdate='" + dateUpdate + '\'' +
+                ", idProject='" + idProject + '\'' +
+                '}';
+    }
 }

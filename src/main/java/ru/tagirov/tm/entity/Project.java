@@ -2,6 +2,7 @@ package ru.tagirov.tm.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Project{
 
@@ -10,7 +11,7 @@ public class Project{
     private String description;
     private String dateCreate;
     private String dateUpdate;
-    public List<Task> taskList = new ArrayList<>();
+    public List<Task> taskListToProject = new ArrayList<>();
 
     public Project(){
     }
@@ -62,11 +63,41 @@ public class Project{
         this.dateUpdate = dateUpdate;
     }
 
-    public List<Task> getTaskList() {
-        return taskList;
+    public List<Task> getTaskListToProject() {
+        return taskListToProject;
     }
 
-    public void setTaskList(List<Task> taskList) {
-        this.taskList = taskList;
+    public void setTaskListToProject(List<Task> taskListToProject) {
+        this.taskListToProject = taskListToProject;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return Objects.equals(id, project.id) &&
+                Objects.equals(name, project.name) &&
+                Objects.equals(description, project.description) &&
+                Objects.equals(dateCreate, project.dateCreate) &&
+                Objects.equals(dateUpdate, project.dateUpdate) &&
+                Objects.equals(taskListToProject, project.taskListToProject);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, dateCreate, dateUpdate, taskListToProject);
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", dateCreate='" + dateCreate + '\'' +
+                ", dateUpdate='" + dateUpdate + '\'' +
+                ", taskList=" + taskListToProject +
+                '}';
     }
 }

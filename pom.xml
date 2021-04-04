@@ -64,7 +64,7 @@
               <manifest>
                 <addClasspath>true</addClasspath>
                 <classpathPrefix>lib/</classpathPrefix>
-                <mainClass>ru.tagirov.tm.App</mainClass>
+                <mainClass>ru.tagirov.tm.Application</mainClass>
               </manifest>
             </archive>
           </configuration>

@@ -2,6 +2,10 @@ package ru.tagirov.tm;
 
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.entity.Task;
+import ru.tagirov.tm.repository.ProjectRepository;
+import ru.tagirov.tm.repository.TaskRepository;
+import ru.tagirov.tm.service.ProjectService;
+import ru.tagirov.tm.service.TaskService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,10 +13,14 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class ProjectManager {
+public class Bootstrap {
+
+    ProjectRepository projectRepository = new ProjectRepository();
+    ProjectService projectService = new ProjectService(projectRepository);
+    TaskRepository taskRepository = new TaskRepository();
+    TaskService taskService = new TaskService(taskRepository);
 
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    private final List<Project> projectList = new ArrayList<>();
     private final List<Task> taskList = new ArrayList<>();
     String name;
     String description;
@@ -22,7 +30,79 @@ public class ProjectManager {
     String nameTask;
     String nameProject;
     SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-    String id;
+
+    public void init() throws IOException {
+        String line;
+        Command command = Command.HELP;
+        System.out.println("*** WELCOME TO TASK MANAGER ***");
+        while(!(line= reader.readLine()).equalsIgnoreCase("EXIT")){
+            for (Command value : Command.values()) {
+                if (value.getTitle().equals(line)) {
+                    command = value;
+                    break;
+                }
+            }
+            switch(command){
+                case PROJECT_CREATE:
+                    projectCreate();
+                    break;
+                case PROJECT_UPDATE:
+                    projectUpdate();
+                    break;
+                case PROJECT_LIST:
+                    projectList();
+                    break;
+                case PROJECT_REMOVE:
+                    projectRemove();
+                    break;
+                case PROJECT_CLEAR:
+                    projectClear();
+                    break;
+                case TASK_CREATE:
+                    taskCreate();
+                    break;
+                case TASK_CREATE_TO_PROJECT:
+                    taskCreateToProject();
+                    break;
+                case TASK_UPDATE:
+                    taskUpdate();
+                    break;
+                case TASK_UPDATE_TO_PROJECT:
+                    taskUpdateToProject();
+                    break;
+                case TASK_LIST:
+                    taskList();
+                    break;
+                case TASK_LIST_TO_PROJECT:
+                    taskListToProject();
+                    break;
+                case TASK_REMOVE:
+                    taskRemove();
+                    break;
+                case TASK_REMOVE_TO_PROJECT:
+                    taskRemoveToProject();
+                    break;
+                case TASK_CLEAR:
+                    taskClear();
+                    break;
+                case TASK_CLEAR_TO_PROJECT:
+                    taskClearToProject();
+                    break;
+                case TASK_ADD_TO_PROJECT:
+                    taskAddToProject();
+                    break;
+                case LIST_ALL:
+                    listAll();
+                    break;
+                case CLEAR_ALL:
+                    clearAll();
+                    break;
+                case HELP:
+                    help();
+                    break;
+            }
+        }
+    }
 
     public void projectCreate() throws IOException {
         System.out.println("[PROJECT CREATE]");
@@ -33,7 +113,7 @@ public class ProjectManager {
         data = new Date();
         dateCreate = formatForDateNow.format(data);
         String id = UUID.randomUUID().toString();
-        projectList.add(new Project(id, nameProject, description, dateCreate));
+        projectService.persist(new Project(id, nameProject, description, dateCreate));
         System.out.println("[OK]");
         System.out.println();
     }
@@ -46,23 +126,23 @@ public class ProjectManager {
         System.out.println("NAME OR DESCRIPTION:");
         or = reader.readLine();
         if (or.equalsIgnoreCase("name")){
-            for(Project p : projectList){
-                if(p.getName().equals(name)){
+            for(Map.Entry<String, Project> tmp : projectService.findAll().entrySet()){
+                if(tmp.getValue().getName().equals(name)){
                     System.out.println("ENTER NEW NAME:");
-                    p.setName(reader.readLine());
+                    tmp.getValue().setName(reader.readLine());
                     data = new Date();
-                    p.setDateUpdate(formatForDateNow.format(data));
+                    tmp.getValue().setDateUpdate(formatForDateNow.format(data));
                 }
             }
             System.out.println("[OK]");
             System.out.println();
         }else if(or.equalsIgnoreCase("description")){
-            for(Project p : projectList){
-                if(p.getName().equals(name)){
+            for(Map.Entry<String, Project> tmp : projectService.findAll().entrySet()){
+                if(tmp.getValue().getName().equals(name)){
                     System.out.println("ENTER NEW DESCRIPTION:");
-                    p.setDescription(reader.readLine());
+                    tmp.getValue().setDescription(reader.readLine());
                     data = new Date();
-                    p.setDateUpdate(formatForDateNow.format(data));
+                    tmp.getValue().setDateUpdate(formatForDateNow.format(data));
                 }
             }
             System.out.println("[OK]");
@@ -75,25 +155,25 @@ public class ProjectManager {
 
     public void projectList(){
         System.out.println("[PROJECT LIST]");
-        if(!(projectList.isEmpty())){
-            for(Project p : projectList){
-                    if (p.getDateUpdate() == null){
+        if(!(projectService.findAll().isEmpty())){
+            for(Map.Entry<String, Project> tmp : projectService.findAll().entrySet()){
+                    if (tmp.getValue().getDateUpdate() == null){
                         System.out.println("Project name:");
-                        System.out.println(p.getName());
+                        System.out.println(tmp.getValue().getName());
                         System.out.println("Project description:");
-                        System.out.println(p.getDescription());
+                        System.out.println(tmp.getValue().getDescription());
                         System.out.println("Date create:");
-                        System.out.println(p.getDateCreate());
+                        System.out.println(tmp.getValue().getDateCreate());
                         System.out.println();
                     }else {
                         System.out.println("Project name:");
-                        System.out.println(p.getName());
+                        System.out.println(tmp.getValue().getName());
                         System.out.println("Project description:");
-                        System.out.println(p.getDescription());
+                        System.out.println(tmp.getValue().getDescription());
                         System.out.println("Date create:");
-                        System.out.println(p.getDateCreate());
+                        System.out.println(tmp.getValue().getDateCreate());
                         System.out.println("Date update:");
-                        System.out.println(p.getDateUpdate());
+                        System.out.println(tmp.getValue().getDateUpdate());
                         System.out.println();
                     }
             }
@@ -107,21 +187,20 @@ public class ProjectManager {
         System.out.println("[PROJECT REMOVE]");
         System.out.println("ENTER PROJECT NAME:");
         name = reader.readLine();
-        for(int i = 0; i < projectList.size(); i++){
-            if(projectList.get(i).getName().equals(name))
-            projectList.remove(i);
+        Project project = null;
+        for(Map.Entry<String, Project> tmp : projectService.findAll().entrySet()){
+            if (tmp.getValue().getName().equals(name)){
+                project = tmp.getValue();
+            }
         }
+        projectService.remove(project);
         System.out.println("[OK]");
         System.out.println();
     }
 
     public void projectClear(){
         System.out.println("[PROJECT CLEAR]");
-        Iterator<Project> iterator = projectList.iterator();
-        while(iterator.hasNext()){
-             Project o = iterator.next();
-                iterator.remove();
-        }
+        projectService.removeAll();
         System.out.println("[OK]");
         System.out.println();
     }
@@ -135,7 +214,7 @@ public class ProjectManager {
         data = new Date();
         dateCreate = formatForDateNow.format(data);
         String id = UUID.randomUUID().toString();
-        taskList.add(new Task(id, name, description, dateCreate));
+        taskService.persist(new Task(id, name, description, dateCreate));
         System.out.println("[OK]");
         System.out.println();
     }
@@ -151,9 +230,9 @@ public class ProjectManager {
         data = new Date();
         dateCreate = formatForDateNow.format(data);
         String id = UUID.randomUUID().toString();
-        for(Project p : projectList){
-            if (p.getName().equals(nameProject)){
-                p.taskListToProject.add(new Task(id, name, description, dateCreate));
+        for(Map.Entry<String, Project> tmp : projectService.findAll().entrySet()){
+            if (tmp.getValue().getName().equals(nameProject)){
+                tmp.getValue().taskListToProject.add(new Task(id, name, description, dateCreate));
             }
         }
         System.out.println("[OK]");
@@ -169,21 +248,21 @@ public class ProjectManager {
         System.out.println("NAME OR DESCRIPTION:");
         or = reader.readLine();
         if (or.equalsIgnoreCase("name")){
-            for(Task p : taskList){
-                if(p.getName().equals(name)){
+            for(Map.Entry<String, Task> tmp : taskService.findAll().entrySet()){
+                if(tmp.getValue().getName().equals(name)){
                     System.out.println("ENTER NEW NAME:");
-                    p.setName(reader.readLine());
+                    tmp.getValue().setName(reader.readLine());
                     data = new Date();
-                    p.setDateUpdate(formatForDateNow.format(data));
+                    tmp.getValue().setDateUpdate(formatForDateNow.format(data));
                 }
             }
         }else if(or.equalsIgnoreCase("description")){
-            for(Task p : taskList){
-                if(p.getName().equals(name)){
+            for(Map.Entry<String, Task> tmp : taskService.findAll().entrySet()){
+                if(tmp.getValue().getName().equals(name)){
                     System.out.println("ENTER NEW DESCRIPTION:");
-                    p.setDescription(reader.readLine());
+                    tmp.getValue().setDescription(reader.readLine());
                     data = new Date();
-                    p.setDateUpdate(formatForDateNow.format(data));
+                    tmp.getValue().setDateUpdate(formatForDateNow.format(data));
                 }
             }
         }
@@ -195,28 +274,28 @@ public class ProjectManager {
         System.out.println("[TASK UPDATE TO PROJECT]");
         System.out.println("ENTER PROJECT NAME:");
         nameProject = reader.readLine();
-        for (Project p : projectList){
-            if (p.getName().equals(nameProject)){
+        for(Map.Entry<String, Project> tmp : projectService.findAll().entrySet()){
+            if (tmp.getValue().getName().equals(nameProject)){
                 System.out.println("ENTER TASK NAME:");
                 nameTask = reader.readLine();
-                for (int i = 0; i < p.taskListToProject.size(); i++){
-                    if (p.taskListToProject.get(i).getName().equals(nameTask)){
+                for (int i = 0; i < tmp.getValue().taskListToProject.size(); i++){
+                    if (tmp.getValue().taskListToProject.get(i).getName().equals(nameTask)){
                         System.out.println("WHAT YOU WANT TO UPDATE?");
                         System.out.println("NAME OR DESCRIPTION:");
                         or = reader.readLine();
                         if (or.equalsIgnoreCase("name")){
                             System.out.println("ENTER NEW NAME:");
-                            p.taskListToProject.get(i).setName(reader.readLine());
+                            tmp.getValue().taskListToProject.get(i).setName(reader.readLine());
                             data = new Date();
-                            p.taskListToProject.get(i).setDateUpdate(formatForDateNow.format(data));
+                            tmp.getValue().taskListToProject.get(i).setDateUpdate(formatForDateNow.format(data));
                             System.out.println("[OK]");
                             System.out.println();
                         }
                         else if(or.equalsIgnoreCase("description")){
                             System.out.println("ENTER NEW DESCRIPTION:");
-                            p.taskListToProject.get(i).setDescription(reader.readLine());
+                            tmp.getValue().taskListToProject.get(i).setDescription(reader.readLine());
                             data = new Date();
-                            p.taskListToProject.get(i).setDateUpdate(formatForDateNow.format(data));
+                            tmp.getValue().taskListToProject.get(i).setDateUpdate(formatForDateNow.format(data));
                             System.out.println("[OK]");
                             System.out.println();
                         }
@@ -228,18 +307,18 @@ public class ProjectManager {
 
     public void taskList(){
         System.out.println("[TASK LIST]");
-        if(!(taskList.isEmpty())){
-            for(Task p : taskList){
-                if (p.getDateUpdate() == null){
-                    System.out.println("Task name: " + p.getName());
-                    System.out.println("Task description: " + p.getDescription());
-                    System.out.println("Date create: " + p.getDateCreate());
+        if(!(taskService.findAll().isEmpty())){
+            for(Map.Entry<String, Task> tmp : taskService.findAll().entrySet()){
+                if (tmp.getValue().getDateUpdate() == null){
+                    System.out.println("Task name: " + tmp.getValue().getName());
+                    System.out.println("Task description: " + tmp.getValue().getDescription());
+                    System.out.println("Date create: " + tmp.getValue().getDateCreate());
                     System.out.println();
                 }else {
-                    System.out.println("Task name: " + p.getName());
-                    System.out.println("Task description: " + p.getDescription());
-                    System.out.println("Date create: " + p.getDateCreate());
-                    System.out.println("Date update: " + p.getDateUpdate());
+                    System.out.println("Task name: " + tmp.getValue().getName());
+                    System.out.println("Task description: " + tmp.getValue().getDescription());
+                    System.out.println("Date create: " + tmp.getValue().getDateCreate());
+                    System.out.println("Date update: " + tmp.getValue().getDateUpdate());
                     System.out.println();
                 }
             }
@@ -254,29 +333,29 @@ public class ProjectManager {
         System.out.println("ENTER PROJECT NAME:");
         nameProject = reader.readLine();
         int count = 1;
-        if(!(projectList.isEmpty())){
-            for(Project p : projectList){
-                if (!(p.taskListToProject.isEmpty())) {
-                    if (p.getName().equals(nameProject)) {
-                        for (int i = 0; i < p.taskListToProject.size(); i++) {
-                            if (p.taskListToProject.get(i).getDateUpdate() == null) {
+        if(!(projectService.findAll().isEmpty())){
+            for(Map.Entry<String, Project> tmp : projectService.findAll().entrySet()){
+                if (!(tmp.getValue().taskListToProject.isEmpty())) {
+                    if (tmp.getValue().getName().equals(nameProject)) {
+                        for (int i = 0; i < tmp.getValue().taskListToProject.size(); i++) {
+                            if (tmp.getValue().taskListToProject.get(i).getDateUpdate() == null) {
                                 System.out.println(count + ". " + "Task name:");
-                                System.out.println(p.taskListToProject.get(i).getName());
+                                System.out.println(tmp.getValue().taskListToProject.get(i).getName());
                                 System.out.println("Task description:");
-                                System.out.println(p.taskListToProject.get(i).getDescription());
+                                System.out.println(tmp.getValue().taskListToProject.get(i).getDescription());
                                 System.out.println("Date create:");
-                                System.out.println(p.taskListToProject.get(i).getDateCreate());
+                                System.out.println(tmp.getValue().taskListToProject.get(i).getDateCreate());
                                 System.out.println();
                                 count++;
                             } else {
                                 System.out.println(count + ". " + "Task name:");
-                                System.out.println(p.taskListToProject.get(i).getName());
+                                System.out.println(tmp.getValue().taskListToProject.get(i).getName());
                                 System.out.println("Task description:");
-                                System.out.println(p.taskListToProject.get(i).getDescription());
+                                System.out.println(tmp.getValue().taskListToProject.get(i).getDescription());
                                 System.out.println("Date create:");
-                                System.out.println(p.taskListToProject.get(i).getDateCreate());
+                                System.out.println(tmp.getValue().taskListToProject.get(i).getDateCreate());
                                 System.out.println("Date update:");
-                                System.out.println(p.taskListToProject.get(i).getDateUpdate());
+                                System.out.println(tmp.getValue().taskListToProject.get(i).getDateUpdate());
                                 System.out.println();
                                 count++;
                             }
@@ -297,11 +376,13 @@ public class ProjectManager {
     public void taskRemove() throws IOException {
         System.out.println("[TASK REMOVE]");
         System.out.println("ENTER TASK NAME:");
+        Task task = null;
         name = reader.readLine();
-        for(int i = 0; i < taskList.size(); i++){
-            if(taskList.get(i).getName().equals(name))
-                taskList.remove(i);
+        for(Map.Entry<String, Task> tmp : taskService.findAll().entrySet()){
+            if(tmp.getValue().getName().equals(name))
+                task = tmp.getValue();
         }
+        taskService.remove(task);
         System.out.println("[OK]");
         System.out.println();
     }
@@ -312,11 +393,11 @@ public class ProjectManager {
         nameProject = reader.readLine();
         System.out.println("ENTER TASK NAME:");
         nameTask = reader.readLine();
-        for (Project p : projectList){
-            if (p.getName().equals(nameProject)){
-                for(int i = 0; i < p.taskListToProject.size(); i++){
-                    if (p.taskListToProject.get(i).getName().equals(nameTask)){
-                        p.taskListToProject.remove(i);
+        for(Map.Entry<String, Project> tmp : projectService.findAll().entrySet()){
+            if (tmp.getValue().getName().equals(nameProject)){
+                for(int i = 0; i < tmp.getValue().taskListToProject.size(); i++){
+                    if (tmp.getValue().taskListToProject.get(i).getName().equals(nameTask)){
+                        tmp.getValue().taskListToProject.remove(i);
                     }
                 }
             }
@@ -328,13 +409,7 @@ public class ProjectManager {
 
     public void taskClear(){
         System.out.println("[TASK CLEAR]");
-        Iterator<Task> iterator = taskList.iterator();
-        while(iterator.hasNext()){
-            Task o = iterator.next();
-            if(o instanceof Task){
-                iterator.remove();
-            }
-        }
+        taskService.removeAll();
         System.out.println("[OK]");
         System.out.println();
     }
@@ -342,12 +417,14 @@ public class ProjectManager {
     public void taskClearToProject() throws IOException {
         System.out.println("[TASK CLEAR TO PROJECT]");
         System.out.println("TASK PROJECT NAME:");
+        Project project = null;
         nameProject = reader.readLine();
-        for(int i = 0; i < projectList.size(); i++) {
-            if (projectList.get(i).getName().equals(nameProject)){
-                (projectList.get(i)).taskListToProject.clear();
+        for(Map.Entry<String, Project> tmp : projectService.findAll().entrySet()) {
+            if (tmp.getValue().getName().equals(nameProject)){
+                project = tmp.getValue();
             }
         }
+        projectService.findOne(project).taskListToProject.clear();
         System.out.println("[OK]");
         System.out.println();
     }
@@ -363,35 +440,37 @@ public class ProjectManager {
         String description1 = null;
         String dateCreate1 = null;
         String id2 = null;
-        for(Task p : taskList){
-            if (p.getName().equals(nameTask)) {
-                id1 = p.getId();
-                name1 = p.getName();
-                description1 = p.getDescription();
-                dateCreate1 = p.getDateCreate();
+        Task task = null;
+        for(Map.Entry<String, Task> tmp : taskService.findAll().entrySet()){
+            if (tmp.getValue().getName().equals(nameTask)) {
+                id1 = tmp.getValue().getId();
+                name1 = tmp.getValue().getName();
+                description1 = tmp.getValue().getDescription();
+                dateCreate1 = tmp.getValue().getDateCreate();
             }
         }
-        for(Project p : projectList){
-            if (p.getName().equals(nameProject)) {
-                p.taskListToProject.add(new Task(id1, name1, description1, dateCreate1));
-                id2 = p.getId();
+        for(Map.Entry<String, Project> tmp : projectService.findAll().entrySet()){
+            if (tmp.getValue().getName().equals(nameProject)) {
+                tmp.getValue().taskListToProject.add(new Task(id1, name1, description1, dateCreate1));
+                id2 = tmp.getValue().getId();
             }
         }
-        for (Project p : projectList){
-            if (p.getName().equals(nameProject)) {
-                for (int i = 0; i < p.taskListToProject.size(); i++) {
-                    if (p.taskListToProject.get(i).getName().equals(nameTask)) {
-                        p.taskListToProject.get(i).setIdProject(id2);
+        for(Map.Entry<String, Project> tmp : projectService.findAll().entrySet()){
+            if (tmp.getValue().getName().equals(nameProject)) {
+                for (int i = 0; i < tmp.getValue().taskListToProject.size(); i++) {
+                    if (tmp.getValue().taskListToProject.get(i).getName().equals(nameTask)) {
+                        tmp.getValue().taskListToProject.get(i).setIdProject(id2);
                     }
                 }
             }
         }
 
-        for(int i = 0; i < taskList.size(); i++){
-                if (taskList.get(i).getName().equals(nameTask)) {
-                    taskList.remove(i);
+        for(Map.Entry<String, Task> tmp : taskService.findAll().entrySet()){
+                if (tmp.getValue().getName().equals(nameTask)) {
+                    task = tmp.getValue();
                 }
         }
+        taskService.remove(task);
         System.out.println("[OK]");
         System.out.println();
     }
@@ -399,18 +478,18 @@ public class ProjectManager {
     public void listAll(){
         System.out.println("[LIST ALL]");
         int count = 1;
-        if(!(projectList.isEmpty())) {
+        if(!(projectService.findAll().isEmpty() && taskService.findAll().isEmpty())) {
             System.out.println("PROJECTS:");
-            for (Project p : projectList) {
+            for(Map.Entry<String, Project> tmp : projectService.findAll().entrySet()) {
                 System.out.println(count + ". " + "PROJECT NAME:");
-                System.out.println(p.getName());
+                System.out.println(tmp.getValue().getName());
                 count++;
             }
             count = 1;
             System.out.println("TASKS:");
-            for (Task p : taskList) {
+            for(Map.Entry<String, Task> tmp : taskService.findAll().entrySet()) {
                 System.out.println(count + ". " + "TASK NAME:");
-                System.out.println(((Task) p).getName());
+                System.out.println(tmp.getValue().getName());
                 count++;
             }
         }else {
@@ -421,7 +500,8 @@ public class ProjectManager {
     }
 
     public void clearAll(){
-        projectList.clear();
+        projectService.removeAll();
+        taskService.removeAll();
         System.out.println("[OK]");
         System.out.println();
     }

@@ -16,6 +16,7 @@ Java SE Development 8\
 Apache Maven version 4.0.0\
 Git\
 UUID\
+MVC(repository, service)
 
 **Разработчик**\
 Тагиров Ренат\

@@ -62,6 +62,7 @@ public class Bootstrap {
         registry(new TaskRemoveToProjectCommand(this));
         registry(new TaskClearCommand(this));
         registry(new TaskClearToProjectCommand(this));
+        registry(new TaskAddToProjectCommand(this));
         registry(new ClearAllCommand(this));
         registry(new ListAllCommand(this));
         registry(new HelpCommand(this));

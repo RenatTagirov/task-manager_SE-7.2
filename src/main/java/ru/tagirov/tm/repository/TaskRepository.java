@@ -1,6 +1,5 @@
 package ru.tagirov.tm.repository;
 
-import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.entity.Task;
 
 import java.util.LinkedHashMap;

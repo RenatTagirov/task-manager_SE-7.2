@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.Map;
 
 public class TaskUpdateToProjectCommand extends AbstractCommand {
+
     public TaskUpdateToProjectCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }

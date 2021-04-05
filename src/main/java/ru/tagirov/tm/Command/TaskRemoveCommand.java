@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public class TaskRemoveCommand extends AbstractCommand {
+
     public TaskRemoveCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }

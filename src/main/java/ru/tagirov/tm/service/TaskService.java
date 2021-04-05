@@ -1,8 +1,6 @@
 package ru.tagirov.tm.service;
 
-import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.entity.Task;
-import ru.tagirov.tm.repository.ProjectRepository;
 import ru.tagirov.tm.repository.TaskRepository;
 
 import java.util.Map;

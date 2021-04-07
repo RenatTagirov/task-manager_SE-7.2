@@ -10,15 +10,17 @@ public class Task{
     private String dateCreate;
     private String dateUpdate;
     private String idProject;
+    private String userId;
 
     public Task(){
     }
 
-    public Task(String id, String name, String descript, String dateCreate) {
+    public Task(String id, String name, String descript, String dateCreate, String userId) {
         this.id = id;
         this.name = name;
         this.description = descript;
         this.dateCreate = dateCreate;
+        this.userId = userId;
     }
 
     public String getId() {
@@ -67,6 +69,14 @@ public class Task{
 
     public void setIdProject(String idProject) {
         this.idProject = idProject;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override

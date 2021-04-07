@@ -11,16 +11,18 @@ public class Project{
     private String description;
     private String dateCreate;
     private String dateUpdate;
+    private String userId;
     public List<Task> taskListToProject = new ArrayList<>();
 
     public Project(){
     }
 
-    public Project(String id, String name, String description, String dateCreate){
+    public Project(String id, String name, String description, String dateCreate, String userId){
         this.id = id;
         this.name = name;
         this.description = description;
         this.dateCreate = dateCreate;
+        this.userId = userId;
     }
 
     public String getId() {
@@ -69,6 +71,14 @@ public class Project{
 
     public void setTaskListToProject(List<Task> taskListToProject) {
         this.taskListToProject = taskListToProject;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override

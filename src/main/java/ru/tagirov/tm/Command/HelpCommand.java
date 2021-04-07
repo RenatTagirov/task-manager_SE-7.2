@@ -10,12 +10,17 @@ public class HelpCommand extends AbstractCommand {
     }
 
     @Override
+    public String getDisplayName() {
+        return "user";
+    }
+
+    @Override
     public String getName() {
         return "help";
     }
 
     @Override
-    public String getDescripion() {
+    public String getDescription() {
         return "Show all commands";
     }
 

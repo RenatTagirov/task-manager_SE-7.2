@@ -10,13 +10,18 @@ public class ClearAllCommand extends AbstractCommand {
     }
 
     @Override
+    public String getDisplayName() {
+        return "user";
+    }
+
+    @Override
     public String getName() {
         return "clear-all";
     }
 
 
     @Override
-    public String getDescripion() {
+    public String getDescription() {
         return "delete all";
     }
 

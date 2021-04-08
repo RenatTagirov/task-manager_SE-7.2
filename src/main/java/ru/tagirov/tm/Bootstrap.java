@@ -1,10 +1,10 @@
 package ru.tagirov.tm;
 
-import ru.tagirov.tm.Command.*;
-import ru.tagirov.tm.Command.adminCommand.*;
-import ru.tagirov.tm.Command.projectCommand.*;
-import ru.tagirov.tm.Command.taskCommand.*;
-import ru.tagirov.tm.Command.userCommand.*;
+import ru.tagirov.tm.command.*;
+import ru.tagirov.tm.command.adminCommand.*;
+import ru.tagirov.tm.command.projectCommand.*;
+import ru.tagirov.tm.command.taskCommand.*;
+import ru.tagirov.tm.command.userCommand.*;
 import ru.tagirov.tm.entity.User;
 import ru.tagirov.tm.repository.ProjectRepository;
 import ru.tagirov.tm.repository.TaskRepository;
@@ -16,6 +16,7 @@ import ru.tagirov.tm.service.UserService;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class Bootstrap {
@@ -27,44 +28,37 @@ public class Bootstrap {
     public ProjectService projectService = new ProjectService(projectRepository);
     public TaskRepository taskRepository = new TaskRepository();
     public TaskService taskService = new TaskService(taskRepository);
+    public Role role = Role.USER;
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     String str;
     public User user;
-    public User admin;
-    public String userId = null;
 
-    public void start() throws IOException {
+    public void start() throws IOException, NoSuchAlgorithmException {
         init();
         System.out.println("***WELCOME TO TASK MANAGER***");
-        while (!(str = reader.readLine()).equalsIgnoreCase("Exit")){
-            if(str.equals("login")){
-                for(Map.Entry<String, AbstractCommand> tmp : commands.entrySet()){
-                    if (tmp.getKey().equalsIgnoreCase(str)){
+        while (!(str = reader.readLine()).equalsIgnoreCase("Exit")) {
+            if (user == null) {
+                for (Map.Entry<String, AbstractCommand> tmp : commands.entrySet()) {
+                    if (tmp.getKey().equalsIgnoreCase(str) && tmp.getValue().getRoleCommand().equals("all")) {
                         tmp.getValue().execute();
                     }
                 }
-            }else if(str.equals("registration")){
-                for(Map.Entry<String, AbstractCommand> tmp : commands.entrySet()){
-                    if (tmp.getKey().equalsIgnoreCase(str)){
+            } else if (user.getRole().getTitle().equals("user")) {
+                for (Map.Entry<String, AbstractCommand> tmp : commands.entrySet()) {
+                    if (tmp.getKey().equalsIgnoreCase(str) && (tmp.getValue().getRoleCommand().equals("user") || tmp.getValue().getRoleCommand().equals("all"))) {
                         tmp.getValue().execute();
-                    }
-                }
-            }else if(user != null){
-                for(Map.Entry<String, AbstractCommand> tmp : commands.entrySet()){
-                    if (tmp.getKey().equalsIgnoreCase(str) && tmp.getValue().getDisplayName().equals("user")){
-                        tmp.getValue().execute();
-                    }else if (tmp.getKey().equalsIgnoreCase(str) && tmp.getValue().getDisplayName().equals("admin")){
+                    } else if (tmp.getKey().equalsIgnoreCase(str) && tmp.getValue().getRoleCommand().equals("admin")) {
                         System.out.println("[THE COMMAND IS NOT VALID!]");
                         System.out.println();
                     }
                 }
-            }else if(admin != null){
-                for(Map.Entry<String, AbstractCommand> tmp : commands.entrySet()){
-                    if (tmp.getKey().equalsIgnoreCase(str)){
+            } else if (user.getRole().getTitle().equals("admin")) {
+                for (Map.Entry<String, AbstractCommand> tmp : commands.entrySet()) {
+                    if (tmp.getKey().equalsIgnoreCase(str)) {
                         tmp.getValue().execute();
                     }
                 }
-            }else{
+            } else {
                 System.out.println("[THE COMMAND IS NOT VALID!]");
                 System.out.println("[YOU ARE LOGGER OUT OF YOUR ACCOUNT!]");
                 System.out.println();
@@ -72,23 +66,23 @@ public class Bootstrap {
         }
     }
 
-    private void registry(final AbstractCommand command){
+    private void registry(final AbstractCommand command) {
         final String commandName = command.getName();
         final String commandDescription = command.getDescription();
 
-        if (commandName == null || commandName.isEmpty()){
+        if (commandName == null || commandName.isEmpty()) {
             System.out.println("Command don't registration!");
         }
-        if (commandDescription == null || commandDescription.isEmpty()){
+        if (commandDescription == null || commandDescription.isEmpty()) {
             System.out.println("Command don't registration!");
         }
         commands.put(commandName, command);
     }
 
-    private void init(){
-        registry(new UserRegistrationCommand(this));
-        registry(new UserLoginCommand(this));
-        registry(new UserExitCommand(this));
+    private void init() throws NoSuchAlgorithmException {
+        registry(new RegistrationCommand(this));
+        registry(new LoginCommand(this));
+        registry(new ExitCommand(this));
         registry(new UserPasswordUpdateCommand(this));
         registry(new UserUpdateProfileCommand(this));
         registry(new UserShowProfileCommand(this));
@@ -117,8 +111,43 @@ public class Bootstrap {
         registry(new TaskClearCommand(this));
         registry(new TaskClearToProjectCommand(this));
         registry(new TaskAddToProjectCommand(this));
-        registry(new ClearAllCommand(this));
-        registry(new ListAllCommand(this));
+        registry(new UserClearAllCommand(this));
+        registry(new UserListAllCommand(this));
         registry(new HelpCommand(this));
     }
 }
+//    project create
+//    project list
+//    project update
+//    project remove
+//    project clear
+//
+//    task create
+//    task create to project
+//    task list
+//    task list to project
+//    task update
+//    task update to project
+//    task remove
+//    task remove to project
+//    task clear
+//    task clear to project
+//    task add to project
+//
+//    show profile
+//    update profile
+//    update password
+//    list all
+//    clear all
+//
+//    show user
+//    show all users
+//    remove user
+//    show projects user
+//    show tasks user
+//    show tasks to project user
+
+//    registration
+//    login
+//    exit - account
+//    help

@@ -1,5 +1,7 @@
 package ru.tagirov.tm.entity;
 
+import ru.tagirov.tm.Role;
+
 import java.util.Objects;
 
 public class User {
@@ -7,16 +9,16 @@ public class User {
     private String userName;
     private String login;
     private String  password;
-    private String displayName;
+    private Role role;
     private String dateCreate;
     private String dateUpdate;
 
-    public User(String userId, String userName, String login, String password, String displayName, String dateCreate) {
+    public User(String userId, String userName, String login, String password, Role role, String dateCreate) {
         this.userId = userId;
         this.userName = userName;
         this.login = login;
         this.password = password;
-        this.displayName = displayName;
+        this.role = role;
         this.dateCreate = dateCreate;
     }
 
@@ -53,12 +55,12 @@ public class User {
         this.password = password;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public Role getRole() {
+        return role;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getDateCreate() {
@@ -87,14 +89,14 @@ public class User {
                 Objects.equals(userName, user.userName) &&
                 Objects.equals(login, user.login) &&
                 Objects.equals(password, user.password) &&
-                Objects.equals(displayName, user.displayName) &&
+                Objects.equals(role, user.role) &&
                 Objects.equals(dateCreate, user.dateCreate) &&
                 Objects.equals(dateUpdate, user.dateUpdate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, userName, login, password, displayName, dateCreate, dateUpdate);
+        return Objects.hash(userId, userName, login, password, role, dateCreate, dateUpdate);
     }
 
     @Override
@@ -104,7 +106,7 @@ public class User {
                 ", userName='" + userName + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", displayName='" + displayName + '\'' +
+                ", displayName='" + role + '\'' +
                 ", dateCreate='" + dateCreate + '\'' +
                 ", dateUpdate='" + dateUpdate + '\'' +
                 '}';

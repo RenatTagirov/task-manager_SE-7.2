@@ -1,16 +1,15 @@
 package ru.tagirov.tm.command.projectCommand;
 
-import ru.tagirov.tm.Bootstrap;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 public class ProjectRemoveCommand extends AbstractCommand {
 
-    public ProjectRemoveCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public ProjectRemoveCommand(Bootstrap bootstrap){
         super(bootstrap);
     }
 

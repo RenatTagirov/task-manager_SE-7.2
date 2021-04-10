@@ -1,6 +1,6 @@
 package ru.tagirov.tm.command.userCommand;
 
-import ru.tagirov.tm.Bootstrap;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.entity.User;

@@ -1,7 +1,7 @@
-package ru.tagirov.tm.command;
+package ru.tagirov.tm.command.AllCommand;
 
-import ru.tagirov.tm.Bootstrap;
-import ru.tagirov.tm.Role;
+import ru.tagirov.tm.command.AbstractCommand;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.entity.User;
 
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 public class LoginCommand extends AbstractCommand {
-    public LoginCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public LoginCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
 
@@ -35,13 +35,9 @@ public class LoginCommand extends AbstractCommand {
             System.out.println("ENTER YOU LOGIN:");
             login = reader.readLine();
             System.out.println("ENTER YOU PASSWORD:");
-            password = reader.readLine();
-            bytes = md5.digest(password.getBytes());
-            for (byte b : bytes){
-                builder.append(b);
-            }
+            password = bootstrap.md5.getMd5(reader.readLine());
             for (Map.Entry<String, User> tmp : bootstrap.userService.findAll().entrySet()) {
-                if (tmp.getValue().getLogin().equals(login) && tmp.getValue().getPassword().equals(builder.toString())) {
+                if (tmp.getValue().getLogin().equals(login) && tmp.getValue().getPassword().equals(password)) {
                     bootstrap.user = tmp.getValue();
                     System.out.println("[OK]");
                     System.out.println();

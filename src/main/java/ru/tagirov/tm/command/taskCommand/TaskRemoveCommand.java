@@ -1,15 +1,14 @@
 package ru.tagirov.tm.command.taskCommand;
 
-import ru.tagirov.tm.Bootstrap;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Task;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 public class TaskRemoveCommand extends AbstractCommand {
 
-    public TaskRemoveCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public TaskRemoveCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
 

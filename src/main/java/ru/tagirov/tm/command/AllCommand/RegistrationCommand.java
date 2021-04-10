@@ -1,17 +1,15 @@
-package ru.tagirov.tm.command;
+package ru.tagirov.tm.command.AllCommand;
 
-import ru.tagirov.tm.Bootstrap;
-import ru.tagirov.tm.Role;
+import ru.tagirov.tm.command.AbstractCommand;
+import ru.tagirov.tm.init.Bootstrap;
+import ru.tagirov.tm.init.Role;
 import ru.tagirov.tm.entity.User;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
-import java.util.UUID;
 
 public class RegistrationCommand extends AbstractCommand {
-    public RegistrationCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public RegistrationCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
 
@@ -48,15 +46,10 @@ public class RegistrationCommand extends AbstractCommand {
                 System.out.println("ENTER LOGIN:");
                 login = reader.readLine();
                 System.out.println("ENTER PASSWORD:");
-                password = reader.readLine();
-                bytes = md5.digest(password.getBytes());
-                for (byte b : bytes){
-                    builder.append(b);
-                }
-                data = new Date();
-                dateCreate = formatForDateNow.format(data);
-                id = UUID.randomUUID().toString();
-                bootstrap.userService.persist(new User(id, userName, login, builder.toString(), bootstrap.role, dateCreate));
+                password = bootstrap.md5.getMd5(reader.readLine());
+                dateCreate = bootstrap.getDate.getDate();
+                id = bootstrap.uuid.getUuid();
+                bootstrap.userService.persist(new User(id, userName, login, password, bootstrap.role, dateCreate));
                 System.out.println("[OK]");
                 System.out.println();
             }

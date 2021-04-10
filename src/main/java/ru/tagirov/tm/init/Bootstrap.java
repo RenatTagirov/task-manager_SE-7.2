@@ -1,6 +1,10 @@
-package ru.tagirov.tm;
+package ru.tagirov.tm.init;
 
 import ru.tagirov.tm.command.*;
+import ru.tagirov.tm.command.AllCommand.ExitCommand;
+import ru.tagirov.tm.command.AllCommand.HelpCommand;
+import ru.tagirov.tm.command.AllCommand.LoginCommand;
+import ru.tagirov.tm.command.AllCommand.RegistrationCommand;
 import ru.tagirov.tm.command.adminCommand.*;
 import ru.tagirov.tm.command.projectCommand.*;
 import ru.tagirov.tm.command.taskCommand.*;
@@ -12,6 +16,9 @@ import ru.tagirov.tm.repository.UserRepository;
 import ru.tagirov.tm.service.ProjectService;
 import ru.tagirov.tm.service.TaskService;
 import ru.tagirov.tm.service.UserService;
+import ru.tagirov.tm.util.GetDate;
+import ru.tagirov.tm.util.GetMd5;
+import ru.tagirov.tm.util.GetUUID;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,9 +35,13 @@ public class Bootstrap {
     public ProjectService projectService = new ProjectService(projectRepository);
     public TaskRepository taskRepository = new TaskRepository();
     public TaskService taskService = new TaskService(taskRepository);
+    public GetMd5 md5 = new GetMd5();
+    public GetDate getDate = new GetDate();
+    public GetUUID uuid = new GetUUID();
     public Role role = Role.USER;
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     String str;
+
     public User user;
 
     public void start() throws IOException, NoSuchAlgorithmException {

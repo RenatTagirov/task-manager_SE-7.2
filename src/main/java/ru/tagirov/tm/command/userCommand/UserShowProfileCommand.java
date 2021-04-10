@@ -1,6 +1,6 @@
 package ru.tagirov.tm.command.userCommand;
 
-import ru.tagirov.tm.Bootstrap;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class UserShowProfileCommand extends AbstractCommand {
 
-    public UserShowProfileCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public UserShowProfileCommand(Bootstrap bootstrap){
         super(bootstrap);
     }
 

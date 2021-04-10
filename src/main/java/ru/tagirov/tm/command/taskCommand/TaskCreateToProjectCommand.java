@@ -1,18 +1,15 @@
 package ru.tagirov.tm.command.taskCommand;
 
-import ru.tagirov.tm.Bootstrap;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.entity.Task;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
 
 public class TaskCreateToProjectCommand extends AbstractCommand {
 
-    public TaskCreateToProjectCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public TaskCreateToProjectCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
 
@@ -41,9 +38,8 @@ public class TaskCreateToProjectCommand extends AbstractCommand {
             nameTask = reader.readLine();
             System.out.println("ENTER DESCRIPTION:");
             description = reader.readLine();
-            data = new Date();
-            dateCreate = formatForDateNow.format(data);
-            String id = UUID.randomUUID().toString();
+            dateCreate = bootstrap.getDate.getDate();
+            id = bootstrap.uuid.getUuid();
             for (Map.Entry<String, Project> tmp : bootstrap.projectService.findAll().entrySet()) {
                 if (tmp.getValue().getName().equals(nameProject) && tmp.getValue().getUserId().equals(bootstrap.user.getUserId())) {
                     tmp.getValue().taskListToProject.add(new Task(id, nameTask, description, dateCreate, bootstrap.user.getUserId()));

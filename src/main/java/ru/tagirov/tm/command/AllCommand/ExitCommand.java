@@ -1,14 +1,14 @@
-package ru.tagirov.tm.command;
+package ru.tagirov.tm.command.AllCommand;
 
-import ru.tagirov.tm.Bootstrap;
-import ru.tagirov.tm.Role;
+import ru.tagirov.tm.command.AbstractCommand;
+import ru.tagirov.tm.init.Bootstrap;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 public class ExitCommand extends AbstractCommand {
 
-    public ExitCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public ExitCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
 

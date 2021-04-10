@@ -1,16 +1,15 @@
 package ru.tagirov.tm.command.taskCommand;
 
-import ru.tagirov.tm.Bootstrap;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.entity.Task;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 public class TaskAddToProjectCommand extends AbstractCommand {
 
-    public TaskAddToProjectCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public TaskAddToProjectCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
 

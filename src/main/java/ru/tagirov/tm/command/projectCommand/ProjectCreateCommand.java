@@ -1,16 +1,13 @@
 package ru.tagirov.tm.command.projectCommand;
 
-import ru.tagirov.tm.Bootstrap;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.UUID;
 
 public class ProjectCreateCommand extends AbstractCommand {
 
-    public ProjectCreateCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public ProjectCreateCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
 
@@ -37,9 +34,8 @@ public class ProjectCreateCommand extends AbstractCommand {
             nameProject = reader.readLine();
             System.out.println("ENTER DESCRIPTION:");
             description = reader.readLine();
-            data = new Date();
-            dateCreate = formatForDateNow.format(data);
-            String id = UUID.randomUUID().toString();
+            dateCreate = bootstrap.getDate.getDate();
+            id = bootstrap.uuid.getUuid();
             bootstrap.projectService.persist(new Project(id, nameProject, description, dateCreate, bootstrap.user.getUserId()));
             System.out.println("[OK]");
             System.out.println();

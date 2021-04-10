@@ -1,15 +1,14 @@
 package ru.tagirov.tm.command.projectCommand;
 
-import ru.tagirov.tm.Bootstrap;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 public class ProjectListCommand extends AbstractCommand {
 
-    public ProjectListCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public ProjectListCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
 

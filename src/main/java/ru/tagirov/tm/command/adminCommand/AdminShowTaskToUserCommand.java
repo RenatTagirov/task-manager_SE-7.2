@@ -1,17 +1,16 @@
 package ru.tagirov.tm.command.adminCommand;
 
-import ru.tagirov.tm.Bootstrap;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Task;
 import ru.tagirov.tm.entity.User;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 public class AdminShowTaskToUserCommand extends AbstractCommand {
 
-    public AdminShowTaskToUserCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public AdminShowTaskToUserCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
 

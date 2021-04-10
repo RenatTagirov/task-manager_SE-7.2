@@ -1,5 +1,7 @@
 package ru.tagirov.tm;
 
+import ru.tagirov.tm.init.Bootstrap;
+
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 

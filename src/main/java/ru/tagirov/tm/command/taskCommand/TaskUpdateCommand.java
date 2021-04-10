@@ -1,17 +1,15 @@
 package ru.tagirov.tm.command.taskCommand;
 
-import ru.tagirov.tm.Bootstrap;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Task;
 import java.io.IOException;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 import java.util.Map;
 
 public class TaskUpdateCommand extends AbstractCommand {
 
-    public TaskUpdateCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public TaskUpdateCommand(Bootstrap bootstrap){
         super(bootstrap);
     }
 
@@ -44,8 +42,7 @@ public class TaskUpdateCommand extends AbstractCommand {
                     if (tmp.getValue().getName().equals(name) && tmp.getValue().getUserId().equals(bootstrap.user.getUserId())) {
                         System.out.println("ENTER NEW NAME:");
                         tmp.getValue().setName(reader.readLine());
-                        data = new Date();
-                        tmp.getValue().setDateUpdate(formatForDateNow.format(data));
+                        tmp.getValue().setDateUpdate(bootstrap.getDate.getDate());
                     }
                 }
             } else if (or.equalsIgnoreCase("description")) {
@@ -53,8 +50,7 @@ public class TaskUpdateCommand extends AbstractCommand {
                     if (tmp.getValue().getName().equals(name) && tmp.getValue().getUserId().equals(bootstrap.user.getUserId())) {
                         System.out.println("ENTER NEW DESCRIPTION:");
                         tmp.getValue().setDescription(reader.readLine());
-                        data = new Date();
-                        tmp.getValue().setDateUpdate(formatForDateNow.format(data));
+                        tmp.getValue().setDateUpdate(bootstrap.getDate.getDate());
                     }
                 }
             }

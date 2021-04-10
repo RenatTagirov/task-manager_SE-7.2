@@ -1,7 +1,7 @@
-package ru.tagirov.tm.command;
+package ru.tagirov.tm.command.AllCommand;
 
-import ru.tagirov.tm.Bootstrap;
-import ru.tagirov.tm.Role;
+import ru.tagirov.tm.command.AbstractCommand;
+import ru.tagirov.tm.init.Bootstrap;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -9,7 +9,7 @@ import java.util.Map;
 public class HelpCommand extends AbstractCommand {
 
 
-    public HelpCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public HelpCommand(Bootstrap bootstrap) {
         super(bootstrap);
     }
 

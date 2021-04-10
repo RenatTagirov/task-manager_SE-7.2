@@ -1,6 +1,6 @@
 package ru.tagirov.tm.command.userCommand;
 
-import ru.tagirov.tm.Bootstrap;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.User;
 
@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class UserPasswordUpdateCommand extends AbstractCommand {
 
-    public UserPasswordUpdateCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public UserPasswordUpdateCommand(Bootstrap bootstrap){
         super(bootstrap);
     }
 
@@ -34,20 +34,13 @@ public class UserPasswordUpdateCommand extends AbstractCommand {
         if(!(bootstrap.user == null)){
                 System.out.println("[PASSWORD UPDATE]");
                 System.out.println("ENTER YOU OLD PASSWORD:");
-                password = reader.readLine();
-                bytes = md5.digest(password.getBytes());
-                for (byte b : bytes) {
-                builder.append(b);}
-                if(builder.toString().equals(bootstrap.user.getPassword())){
+                password = bootstrap.md5.getMd5(reader.readLine());
+                if(password.equals(bootstrap.user.getPassword())){
                     System.out.println("ENTER YOU NEW PASSWORD:");
-                    newPassword = reader.readLine();
-                    newBytes = md5.digest(newPassword.getBytes());
-                    for (byte b : newBytes) {
-                        newBuilder.append(b);
-                    }
+                    newPassword = bootstrap.md5.getMd5(reader.readLine());
                     for(Map.Entry<String, User> tmp : bootstrap.userService.findAll().entrySet()){
                         if(tmp.getValue().getUserId().equals(bootstrap.user.getUserId())){
-                            tmp.getValue().setPassword(newBuilder.toString());
+                            tmp.getValue().setPassword(newPassword);
                             System.out.println("[OK]");
                             System.out.println();
                         }

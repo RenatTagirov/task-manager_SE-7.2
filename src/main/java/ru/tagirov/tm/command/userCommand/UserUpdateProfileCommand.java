@@ -1,16 +1,15 @@
 package ru.tagirov.tm.command.userCommand;
 
-import ru.tagirov.tm.Bootstrap;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.User;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Map;
 
 public class UserUpdateProfileCommand extends AbstractCommand {
-    public UserUpdateProfileCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
+    public UserUpdateProfileCommand(Bootstrap bootstrap){
         super(bootstrap);
     }
 
@@ -43,8 +42,7 @@ public class UserUpdateProfileCommand extends AbstractCommand {
                             System.out.println("ENTER NEW NAME:");
                             userName = reader.readLine();
                             tmp.getValue().setUserName(userName);
-                            data = new Date();
-                            tmp.getValue().setDateUpdate(formatForDateNow.format(data));
+                            tmp.getValue().setDateUpdate(bootstrap.getDate.getDate());
                             bootstrap.user.setUserName(userName);
                             bootstrap.user.setDateUpdate(tmp.getValue().getDateUpdate());
                             System.out.println("[OK]");
@@ -58,7 +56,7 @@ public class UserUpdateProfileCommand extends AbstractCommand {
                             login= reader.readLine();
                             tmp.getValue().setLogin(login);
                             data = new Date();
-                            tmp.getValue().setDateUpdate(formatForDateNow.format(data));
+                            tmp.getValue().setDateUpdate(bootstrap.getDate.getDate());
                             bootstrap.user.setLogin(login);
                             bootstrap.user.setDateUpdate(tmp.getValue().getDateUpdate());
                             System.out.println("[OK]");

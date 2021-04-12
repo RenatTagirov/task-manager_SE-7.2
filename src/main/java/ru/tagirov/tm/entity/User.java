@@ -1,6 +1,6 @@
 package ru.tagirov.tm.entity;
 
-import ru.tagirov.tm.init.Role;
+import ru.tagirov.tm.enumeration.Role;
 
 import java.util.Objects;
 

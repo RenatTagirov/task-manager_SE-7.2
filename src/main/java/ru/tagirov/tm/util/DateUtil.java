@@ -3,7 +3,7 @@ package ru.tagirov.tm.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class GetDate {
+public class DateUtil {
     SimpleDateFormat formatForDateNow  = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
     Date date;
     String uuid;

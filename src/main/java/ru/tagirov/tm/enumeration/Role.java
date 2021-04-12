@@ -1,4 +1,4 @@
-package ru.tagirov.tm.init;
+package ru.tagirov.tm.enumeration;
 
 public enum  Role {
     ADMIN("admin"),

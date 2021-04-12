@@ -2,11 +2,10 @@ package ru.tagirov.tm.command.AllCommand;
 
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.init.Bootstrap;
-import ru.tagirov.tm.init.Role;
+import ru.tagirov.tm.enumeration.Role;
 import ru.tagirov.tm.entity.User;
 
 import java.io.IOException;
-import java.util.Date;
 
 public class RegistrationCommand extends AbstractCommand {
     public RegistrationCommand(Bootstrap bootstrap) {

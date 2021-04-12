@@ -3,7 +3,7 @@ package ru.tagirov.tm.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class GetMd5 {
+public class Md5Util {
 
     public String getMd5(String password){
         StringBuilder builder = null;

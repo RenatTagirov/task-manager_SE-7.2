@@ -5,16 +5,13 @@ import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.entity.Task;
 import ru.tagirov.tm.entity.User;
+import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 public class UserListAllCommand extends AbstractCommand {
-
-    public UserListAllCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
-        super(bootstrap);
-    }
 
     @Override
     public String getRoleCommand() {
@@ -32,24 +29,29 @@ public class UserListAllCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        this.serviceLocator = serviceLocator;
+    }
+
+    @Override
     public void execute() throws IOException {
-        if(!(bootstrap.user == null)) {
+        if(!(serviceLocator.getUser() == null)) {
             System.out.println("[LIST ALL]");
             int count = 1;
-            if (bootstrap.user.getRole().getTitle().equals("user")) {
-                if (!(bootstrap.projectService.findAll().isEmpty())) {
+            if (serviceLocator.getUser().getRole().getTitle().equals("user")) {
+                if (!(serviceLocator.getIProjectService().findAll().isEmpty())) {
                     System.out.println("PROJECTS:");
-                    for (Map.Entry<String, Project> tmp : bootstrap.projectService.findAll().entrySet()) {
+                    for (Project tmp : serviceLocator.getIProjectService().findAll()) {
                         System.out.println(count + ". " + "PROJECT NAME:");
-                        System.out.println(tmp.getValue().getName());
+                        System.out.println(tmp.getName());
                         count++;
                     }
-                } else if (!(bootstrap.taskService.findAll().isEmpty())) {
+                } else if (!(serviceLocator.getITaskService().findAll().isEmpty())) {
                     count = 1;
                     System.out.println("TASKS:");
-                    for (Map.Entry<String, Task> tmp : bootstrap.taskService.findAll().entrySet()) {
+                    for (Task tmp : serviceLocator.getITaskService().findAll()) {
                         System.out.println(count + ". " + "TASK NAME:");
-                        System.out.println(tmp.getValue().getName());
+                        System.out.println(tmp.getName());
                         count++;
                     }
                 } else {
@@ -57,27 +59,27 @@ public class UserListAllCommand extends AbstractCommand {
                     System.out.println();
                 }
                 System.out.println();
-            }else if (bootstrap.user.getRole().getTitle().equals("admin")) {
+            }else if (serviceLocator.getUser().getRole().getTitle().equals("admin")) {
                 System.out.println("ENTER PROFILE NAME:");
                 name = reader.readLine();
-                for(Map.Entry<String, User> tmp : bootstrap.userService.findAll().entrySet()) {
-                    if (tmp.getValue().getUserName().equals(name)) {
-                        if (!(bootstrap.projectService.findAll().isEmpty())) {
+                for(User tmp : serviceLocator.getIUserService().findAll()) {
+                    if (tmp.getName().equals(name)) {
+                        if (!(serviceLocator.getIProjectService().findAll().isEmpty())) {
                             System.out.println("PROJECTS:");
-                            for (Map.Entry<String, Project> tmp1 : bootstrap.projectService.findAll().entrySet()) {
-                                if (tmp1.getValue().getUserId().equals(tmp.getValue().getUserId())) {
+                            for (Project tmp1 : serviceLocator.getIProjectService().findAll()) {
+                                if (tmp1.getUserId().equals(tmp.getId())) {
                                     System.out.println(count + ". " + "PROJECT NAME:");
-                                    System.out.println(tmp1.getValue().getName());
+                                    System.out.println(tmp1.getName());
                                     count++;
                                 }
                             }
-                        } else if (!(bootstrap.taskService.findAll().isEmpty())) {
+                        } else if (!(serviceLocator.getITaskService().findAll().isEmpty())) {
                             count = 1;
                             System.out.println("TASKS:");
-                            for (Map.Entry<String, Task> tmp1 : bootstrap.taskService.findAll().entrySet()) {
-                                if (tmp1.getValue().getUserId().equals(tmp.getValue().getUserId())) {
+                            for (Task tmp1 : serviceLocator.getITaskService().findAll()) {
+                                if (tmp1.getUserId().equals(tmp.getId())) {
                                     System.out.println(count + ". " + "TASK NAME:");
-                                    System.out.println(tmp1.getValue().getName());
+                                    System.out.println(tmp1.getName());
                                     count++;
                                 }
                             }

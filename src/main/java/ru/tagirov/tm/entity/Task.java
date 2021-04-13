@@ -2,9 +2,8 @@ package ru.tagirov.tm.entity;
 
 import java.util.Objects;
 
-public class Task{
+public class Task extends AbstractEntity{
 
-    private String id;
     private String name;
     private String description;
     private String dateCreate;
@@ -23,12 +22,14 @@ public class Task{
         this.userId = userId;
     }
 
+    @Override
     public String getId() {
-        return id;
+        return super.getId();
     }
 
+    @Override
     public void setId(String id) {
-        this.id = id;
+        super.setId(id);
     }
 
     public String getName() {

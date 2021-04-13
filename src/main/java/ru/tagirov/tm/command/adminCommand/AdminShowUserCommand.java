@@ -3,14 +3,14 @@ package ru.tagirov.tm.command.adminCommand;
 import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.User;
+import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
 import java.util.Map;
 
 public class AdminShowUserCommand extends AbstractCommand {
 
-    public AdminShowUserCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public AdminShowUserCommand() {
     }
 
     @Override
@@ -29,29 +29,34 @@ public class AdminShowUserCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
+    @Override
     public void execute() throws IOException {
-        if(!(bootstrap.user == null)){
+        if(!(serviceLocator.getUser() == null)){
             System.out.println("[SHOW PROFILE]");
             System.out.println("[ENTER NAME PROFILE]");
             name = reader.readLine();
-            for(Map.Entry<String, User> tmp : bootstrap.userService.findAll().entrySet()){
-                if(tmp.getValue().getUserName().equals(name)){
-                    if(tmp.getValue().getDateCreate() == null){
-                        System.out.println("Name: " + tmp.getValue().getUserId());
-                        System.out.println("Name: " + tmp.getValue().getUserName());
-                        System.out.println("Login: " + tmp.getValue().getLogin());
-                        System.out.println("Login: " + tmp.getValue().getPassword());
-                        System.out.println("Display name: " + tmp.getValue().getRole().getTitle());
-                        System.out.println("Date create: " + tmp.getValue().getDateCreate());
+            for(User tmp : serviceLocator.getIUserService().findAll()){
+                if(tmp.getName().equals(name)){
+                    if(tmp.getDateCreate() == null){
+                        System.out.println("Name: " + tmp.getId());
+                        System.out.println("Name: " + tmp.getName());
+                        System.out.println("Login: " + tmp.getLogin());
+                        System.out.println("Login: " + tmp.getPassword());
+                        System.out.println("Display name: " + tmp.getRole().getTitle());
+                        System.out.println("Date create: " + tmp.getDateCreate());
                         System.out.println();
                     }else{
-                        System.out.println("Name: " + tmp.getValue().getUserId());
-                        System.out.println("Name: " + tmp.getValue().getUserName());
-                        System.out.println("Login: " + tmp.getValue().getLogin());
-                        System.out.println("Login: " + tmp.getValue().getPassword());
-                        System.out.println("Display name: " + tmp.getValue().getRole().getTitle());
-                        System.out.println("Date create: " + tmp.getValue().getDateCreate());
-                        System.out.println("Date create: " + tmp.getValue().getDateUpdate());
+                        System.out.println("Name: " + tmp.getId());
+                        System.out.println("Name: " + tmp.getName());
+                        System.out.println("Login: " + tmp.getLogin());
+                        System.out.println("Login: " + tmp.getPassword());
+                        System.out.println("Display name: " + tmp.getRole().getTitle());
+                        System.out.println("Date create: " + tmp.getDateCreate());
+                        System.out.println("Date create: " + tmp.getDateUpdate());
                         System.out.println();
                     }
                 }

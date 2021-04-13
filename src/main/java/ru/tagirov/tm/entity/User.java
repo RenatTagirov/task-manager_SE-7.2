@@ -4,18 +4,18 @@ import ru.tagirov.tm.enumeration.Role;
 
 import java.util.Objects;
 
-public class User {
-    private String userId;
-    private String userName;
+public class User extends AbstractEntity{
+
+    private String name;
     private String login;
-    private String  password;
+    private String password;
     private Role role;
     private String dateCreate;
     private String dateUpdate;
 
-    public User(String userId, String userName, String login, String password, Role role, String dateCreate) {
-        this.userId = userId;
-        this.userName = userName;
+    public User(String id, String name, String login, String password, Role role, String dateCreate) {
+        this.id = id;
+        this.name = name;
         this.login = login;
         this.password = password;
         this.role = role;
@@ -23,20 +23,22 @@ public class User {
     }
 
 
-    public String getUserId() {
-        return userId;
+    @Override
+    public String getId() {
+        return super.getId();
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    @Override
+    public void setId(String id) {
+        super.setId(id);
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String userName) {
+        this.name = name;
     }
 
     public String getLogin() {
@@ -85,8 +87,8 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(userId, user.userId) &&
-                Objects.equals(userName, user.userName) &&
+        return Objects.equals(id, user.id) &&
+                Objects.equals(name, user.name) &&
                 Objects.equals(login, user.login) &&
                 Objects.equals(password, user.password) &&
                 Objects.equals(role, user.role) &&
@@ -96,14 +98,14 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, userName, login, password, role, dateCreate, dateUpdate);
+        return Objects.hash(id, name, login, password, role, dateCreate, dateUpdate);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "userId='" + userId + '\'' +
-                ", userName='" + userName + '\'' +
+                "userId='" + id + '\'' +
+                ", userName='" + name + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", displayName='" + role + '\'' +
@@ -111,4 +113,5 @@ public class User {
                 ", dateUpdate='" + dateUpdate + '\'' +
                 '}';
     }
+
 }

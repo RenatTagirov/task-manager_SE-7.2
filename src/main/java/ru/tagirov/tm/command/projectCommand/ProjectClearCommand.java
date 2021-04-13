@@ -1,16 +1,13 @@
 package ru.tagirov.tm.command.projectCommand;
 
-import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
-
-import java.util.Map;
+import ru.tagirov.tm.init.ServiceLocator;
 
 public class ProjectClearCommand extends AbstractCommand {
 
 
-    public ProjectClearCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public ProjectClearCommand() {
     }
 
     @Override
@@ -29,12 +26,17 @@ public class ProjectClearCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
+    @Override
     public void execute() {
-        if(!(bootstrap.user == null)) {
+        if(!(serviceLocator.getUser() == null)) {
             System.out.println("[PROJECT CLEAR]");
-            for (Map.Entry<String, Project> tmp : bootstrap.projectService.findAll().entrySet()) {
-                if (tmp.getValue().getUserId().equals(bootstrap.user.getUserId())) {
-                    bootstrap.projectService.remove(tmp.getValue());
+            for (Project tmp : serviceLocator.getIProjectService().findAll()) {
+                if (tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                    serviceLocator.getIProjectService().remove(tmp.getId());
                 }
             }
             System.out.println("[OK]");

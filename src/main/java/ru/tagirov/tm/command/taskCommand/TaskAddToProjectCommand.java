@@ -4,13 +4,14 @@ import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.entity.Task;
+import ru.tagirov.tm.init.ServiceLocator;
+
 import java.io.IOException;
 import java.util.Map;
 
 public class TaskAddToProjectCommand extends AbstractCommand {
 
-    public TaskAddToProjectCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public TaskAddToProjectCommand() {
     }
 
     @Override
@@ -29,8 +30,13 @@ public class TaskAddToProjectCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
+    @Override
     public void execute() throws IOException {
-        if (!(bootstrap.user == null)) {
+        if (!(serviceLocator.getUser() == null)) {
             System.out.println("[TASK ADD TO PROJECT]");
             System.out.println("ENTER TASK NAME:");
             nameTask = reader.readLine();
@@ -41,33 +47,33 @@ public class TaskAddToProjectCommand extends AbstractCommand {
             String description1 = null;
             String dateCreate1 = null;
             String id2 = null;
-            for (Map.Entry<String, Task> tmp : bootstrap.taskService.findAll().entrySet()) {
-                if (tmp.getValue().getName().equals(nameTask) && tmp.getValue().getUserId().equals(bootstrap.user.getUserId())) {
-                    id1 = tmp.getValue().getId();
-                    name1 = tmp.getValue().getName();
-                    description1 = tmp.getValue().getDescription();
-                    dateCreate1 = tmp.getValue().getDateCreate();
+            for (Task tmp : serviceLocator.getITaskService().findAll()) {
+                if (tmp.getName().equals(nameTask) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                    id1 = tmp.getId();
+                    name1 = tmp.getName();
+                    description1 = tmp.getDescription();
+                    dateCreate1 = tmp.getDateCreate();
                 }
             }
-            for (Map.Entry<String, Project> tmp : bootstrap.projectService.findAll().entrySet()) {
-                if (tmp.getValue().getName().equals(nameProject) && tmp.getValue().getUserId().equals(bootstrap.user.getUserId())) {
-                    tmp.getValue().taskListToProject.add(new Task(id1, name1, description1, dateCreate1, bootstrap.user.getUserId()));
-                    id2 = tmp.getValue().getId();
+            for (Project tmp : serviceLocator.getIProjectService().findAll()) {
+                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                    tmp.taskListToProject.add(new Task(id1, name1, description1, dateCreate1, serviceLocator.getUser().getId()));
+                    id2 = tmp.getId();
                 }
             }
-            for (Map.Entry<String, Project> tmp : bootstrap.projectService.findAll().entrySet()) {
-                if (tmp.getValue().getName().equals(nameProject) && tmp.getValue().getUserId().equals(bootstrap.user.getUserId())) {
-                    for (int i = 0; i < tmp.getValue().taskListToProject.size(); i++) {
-                        if (tmp.getValue().taskListToProject.get(i).getName().equals(nameTask)) {
-                            tmp.getValue().taskListToProject.get(i).setIdProject(id2);
+            for (Project tmp : serviceLocator.getIProjectService().findAll()) {
+                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                    for (int i = 0; i < tmp.taskListToProject.size(); i++) {
+                        if (tmp.taskListToProject.get(i).getName().equals(nameTask)) {
+                            tmp.taskListToProject.get(i).setIdProject(id2);
                         }
                     }
                 }
             }
 
-            for (Map.Entry<String, Task> tmp : bootstrap.taskService.findAll().entrySet()) {
-                if (tmp.getValue().getName().equals(nameTask) && tmp.getValue().getUserId().equals(bootstrap.user.getUserId())) {
-                    bootstrap.taskService.remove(tmp.getValue());
+            for (Task tmp : serviceLocator.getITaskService().findAll()) {
+                if (tmp.getName().equals(nameTask) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                    serviceLocator.getIUserService().remove(tmp.getId());
                 }
             }
             System.out.println("[OK]");

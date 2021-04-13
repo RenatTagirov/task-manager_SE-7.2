@@ -4,13 +4,14 @@ import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.entity.Task;
+import ru.tagirov.tm.init.ServiceLocator;
+
 import java.io.IOException;
 import java.util.Map;
 
 public class TaskCreateToProjectCommand extends AbstractCommand {
 
-    public TaskCreateToProjectCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public TaskCreateToProjectCommand() {
     }
 
     @Override
@@ -29,8 +30,13 @@ public class TaskCreateToProjectCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
+    @Override
     public void execute() throws IOException {
-        if (!(bootstrap.user == null)) {
+        if (!(serviceLocator.getUser() == null)) {
             System.out.println("[TASK CREATE TO PROJECT]");
             System.out.println("ENTER PROJECT NAME:");
             nameProject = reader.readLine();
@@ -38,11 +44,11 @@ public class TaskCreateToProjectCommand extends AbstractCommand {
             nameTask = reader.readLine();
             System.out.println("ENTER DESCRIPTION:");
             description = reader.readLine();
-            dateCreate = bootstrap.getDate.getDate();
-            id = bootstrap.uuid.getUuid();
-            for (Map.Entry<String, Project> tmp : bootstrap.projectService.findAll().entrySet()) {
-                if (tmp.getValue().getName().equals(nameProject) && tmp.getValue().getUserId().equals(bootstrap.user.getUserId())) {
-                    tmp.getValue().taskListToProject.add(new Task(id, nameTask, description, dateCreate, bootstrap.user.getUserId()));
+            dateCreate = serviceLocator.getDate().getDate();
+            id = serviceLocator.getUUID().getUuid();
+            for (Project tmp : serviceLocator.getIProjectService().findAll()) {
+                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                    tmp.taskListToProject.add(new Task(id, nameTask, description, dateCreate, serviceLocator.getUser().getId()));
                 }
             }
             System.out.println("[OK]");

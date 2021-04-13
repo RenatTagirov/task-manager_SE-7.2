@@ -3,6 +3,7 @@ package ru.tagirov.tm.command.userCommand;
 import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.User;
+import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -10,8 +11,7 @@ import java.util.Map;
 
 public class UserPasswordUpdateCommand extends AbstractCommand {
 
-    public UserPasswordUpdateCommand(Bootstrap bootstrap){
-        super(bootstrap);
+    public UserPasswordUpdateCommand() {
     }
 
     @Override
@@ -30,17 +30,24 @@ public class UserPasswordUpdateCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        this.serviceLocator = serviceLocator;
+    }
+
+
+
+    @Override
     public void execute() throws IOException {
-        if(!(bootstrap.user == null)){
+        if(!(serviceLocator.getUser() == null)){
                 System.out.println("[PASSWORD UPDATE]");
                 System.out.println("ENTER YOU OLD PASSWORD:");
-                password = bootstrap.md5.getMd5(reader.readLine());
-                if(password.equals(bootstrap.user.getPassword())){
+                password = serviceLocator.getMd5().getMd5(reader.readLine());
+                if(password.equals(serviceLocator.getUser().getPassword())){
                     System.out.println("ENTER YOU NEW PASSWORD:");
-                    newPassword = bootstrap.md5.getMd5(reader.readLine());
-                    for(Map.Entry<String, User> tmp : bootstrap.userService.findAll().entrySet()){
-                        if(tmp.getValue().getUserId().equals(bootstrap.user.getUserId())){
-                            tmp.getValue().setPassword(newPassword);
+                    newPassword = serviceLocator.getMd5().getMd5(reader.readLine());
+                    for(User tmp : serviceLocator.getIUserService().findAll()){
+                        if(tmp.getId().equals(serviceLocator.getUser().getId())){
+                            tmp.setPassword(newPassword);
                             System.out.println("[OK]");
                             System.out.println();
                         }

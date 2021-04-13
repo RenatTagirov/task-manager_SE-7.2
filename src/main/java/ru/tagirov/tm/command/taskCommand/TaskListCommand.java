@@ -3,13 +3,13 @@ package ru.tagirov.tm.command.taskCommand;
 import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Task;
+import ru.tagirov.tm.init.ServiceLocator;
 
 import java.util.Map;
 
 public class TaskListCommand extends AbstractCommand {
 
-    public TaskListCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public TaskListCommand() {
     }
 
     @Override
@@ -28,21 +28,26 @@ public class TaskListCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
+    @Override
     public void execute() {
-        if (!(bootstrap.user == null)) {
+        if (!(serviceLocator.getUser() == null)) {
             System.out.println("[TASK LIST]");
-            if (!(bootstrap.taskService.findAll().isEmpty())) {
-                for (Map.Entry<String, Task> tmp : bootstrap.taskService.findAll().entrySet()) {
-                    if (tmp.getValue().getDateUpdate() == null && tmp.getValue().getUserId().equals(bootstrap.user.getUserId())) {
-                        System.out.println("Task name: " + tmp.getValue().getName());
-                        System.out.println("Task description: " + tmp.getValue().getDescription());
-                        System.out.println("Date create: " + tmp.getValue().getDateCreate());
+            if (!(serviceLocator.getITaskService().findAll().isEmpty())) {
+                for (Task tmp : serviceLocator.getITaskService().findAll()) {
+                    if (tmp.getDateUpdate() == null && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                        System.out.println("Task name: " + tmp.getName());
+                        System.out.println("Task description: " + tmp.getDescription());
+                        System.out.println("Date create: " + tmp.getDateCreate());
                         System.out.println();
                     } else {
-                        System.out.println("Task name: " + tmp.getValue().getName());
-                        System.out.println("Task description: " + tmp.getValue().getDescription());
-                        System.out.println("Date create: " + tmp.getValue().getDateCreate());
-                        System.out.println("Date update: " + tmp.getValue().getDateUpdate());
+                        System.out.println("Task name: " + tmp.getName());
+                        System.out.println("Task description: " + tmp.getDescription());
+                        System.out.println("Date create: " + tmp.getDateCreate());
+                        System.out.println("Date update: " + tmp.getDateUpdate());
                         System.out.println();
                     }
                 }

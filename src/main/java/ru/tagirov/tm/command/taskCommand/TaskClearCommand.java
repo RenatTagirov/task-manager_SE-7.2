@@ -3,13 +3,13 @@ package ru.tagirov.tm.command.taskCommand;
 import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Task;
+import ru.tagirov.tm.init.ServiceLocator;
 
 import java.util.Map;
 
 public class TaskClearCommand extends AbstractCommand {
 
-    public TaskClearCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public TaskClearCommand() {
     }
 
     @Override
@@ -28,12 +28,17 @@ public class TaskClearCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
+    @Override
     public void execute() {
-        if (!(bootstrap.user == null)) {
+        if (!(serviceLocator.getUser() == null)) {
             System.out.println("[TASK CLEAR]");
-            for (Map.Entry<String, Task> tmp : bootstrap.taskService.findAll().entrySet()) {
-                if (tmp.getValue().getUserId().equals(bootstrap.user.getUserId())) {
-                    bootstrap.taskService.remove(tmp.getValue());
+            for (Task tmp : serviceLocator.getITaskService().findAll()) {
+                if (tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                    serviceLocator.getITaskService().remove(tmp.getId());
                 }
             }
             System.out.println("[OK]");

@@ -1,16 +1,14 @@
 package ru.tagirov.tm.command.adminCommand;
 
-import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.User;
+import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class AdminRemoveToUserCommand extends AbstractCommand {
 
-    public AdminRemoveToUserCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public AdminRemoveToUserCommand() {
     }
 
     @Override
@@ -29,14 +27,19 @@ public class AdminRemoveToUserCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
+    @Override
     public void execute() throws IOException {
-        if(!(bootstrap.user == null)){
+        if(!(serviceLocator.getUser() == null)){
             System.out.println("[USER REMOVE]");
             System.out.println("ENTER USER NAME:");
             name = reader.readLine();
-            for(Map.Entry<String, User> tmp : bootstrap.userService.findAll().entrySet()){
-                if (tmp.getValue().getUserName().equals(name)){
-                    bootstrap.userService.remove(tmp.getValue());
+            for(User tmp : serviceLocator.getIUserService().findAll()){
+                if (tmp.getName().equals(name)){
+                    serviceLocator.getIUserService().remove(tmp.getId());
                 }
             }
             System.out.println("[OK]");

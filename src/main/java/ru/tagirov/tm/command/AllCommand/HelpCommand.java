@@ -2,6 +2,7 @@ package ru.tagirov.tm.command.AllCommand;
 
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.init.Bootstrap;
+import ru.tagirov.tm.init.ServiceLocator;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -9,9 +10,9 @@ import java.util.Map;
 public class HelpCommand extends AbstractCommand {
 
 
-    public HelpCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public HelpCommand() {
     }
+
 
     @Override
     public String getRoleCommand() {
@@ -29,24 +30,29 @@ public class HelpCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
+    @Override
     public void execute() {
-        if (bootstrap.user == null){
-            for(Map.Entry<String, AbstractCommand> tmp : bootstrap.commands.entrySet()){
-                if (tmp.getValue().getRoleCommand().equals("all")){
-                    System.out.println(tmp.getValue().getName() + " - " + tmp.getValue().getDescription());
+        if (serviceLocator.getUser() == null){
+            for(AbstractCommand tmp : serviceLocator.getCommands()){
+                if (tmp.getRoleCommand().equals("all")){
+                    System.out.println(tmp.getName() + " - " + tmp.getDescription());
                 }
             }
             System.out.println();
-        }else if(bootstrap.user.getRole().getTitle().equals("user")){
-            for(Map.Entry<String, AbstractCommand> tmp : bootstrap.commands.entrySet()){
-                if (tmp.getValue().getRoleCommand().equals("all") || tmp.getValue().getRoleCommand().equals("user") ){
-                    System.out.println(tmp.getValue().getName() + " - " + tmp.getValue().getDescription());
+        }else if(serviceLocator.getUser().getRole().getTitle().equals("user")){
+            for(AbstractCommand tmp : serviceLocator.getCommands()){
+                if (tmp.getRoleCommand().equals("all") || tmp.getRoleCommand().equals("user") ){
+                    System.out.println(tmp.getName() + " - " + tmp.getDescription());
                 }
             }
             System.out.println();
-        }else if(bootstrap.user.getRole().getTitle().equals("admin")){
-            for(Map.Entry<String, AbstractCommand> tmp : bootstrap.commands.entrySet()){
-                System.out.println(tmp.getValue().getName() + " - " + tmp.getValue().getDescription());
+        }else if(serviceLocator.getUser().getRole().getTitle().equals("admin")){
+            for(AbstractCommand tmp : serviceLocator.getCommands()){
+                System.out.println(tmp.getName() + " - " + tmp.getDescription());
             }
         }else{
             System.out.println("SOMETHING WENT WRONG!?!?!?!?!");

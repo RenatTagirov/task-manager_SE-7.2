@@ -3,14 +3,16 @@ package ru.tagirov.tm.command.taskCommand;
 import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
+import ru.tagirov.tm.init.ServiceLocator;
+
 import java.io.IOException;
 
 import java.util.Map;
 
 public class TaskUpdateToProjectCommand extends AbstractCommand {
 
-    public TaskUpdateToProjectCommand(Bootstrap bootstrap){
-        super(bootstrap);
+
+    public TaskUpdateToProjectCommand() {
     }
 
     @Override
@@ -29,30 +31,35 @@ public class TaskUpdateToProjectCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
+    @Override
     public void execute() throws IOException {
-        if (!(bootstrap.user == null)) {
+        if (!(serviceLocator.getUser() == null)) {
             System.out.println("[TASK UPDATE TO PROJECT]");
             System.out.println("ENTER PROJECT NAME:");
             nameProject = reader.readLine();
-            for (Map.Entry<String, Project> tmp : bootstrap.projectService.findAll().entrySet()) {
-                if (tmp.getValue().getName().equals(nameProject) && tmp.getValue().getUserId().equals(bootstrap.user.getUserId())) {
+            for (Project tmp : serviceLocator.getIProjectService().findAll()) {
+                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
                     System.out.println("ENTER TASK NAME:");
                     nameTask = reader.readLine();
-                    for (int i = 0; i < tmp.getValue().taskListToProject.size(); i++) {
-                        if (tmp.getValue().taskListToProject.get(i).getName().equals(nameTask)) {
+                    for (int i = 0; i < tmp.taskListToProject.size(); i++) {
+                        if (tmp.taskListToProject.get(i).getName().equals(nameTask)) {
                             System.out.println("WHAT YOU WANT TO UPDATE?");
                             System.out.println("NAME OR DESCRIPTION:");
                             or = reader.readLine();
                             if (or.equalsIgnoreCase("name")) {
                                 System.out.println("ENTER NEW NAME:");
-                                tmp.getValue().taskListToProject.get(i).setName(reader.readLine());
-                                tmp.getValue().taskListToProject.get(i).setDateUpdate(bootstrap.getDate.getDate());
+                                tmp.taskListToProject.get(i).setName(reader.readLine());
+                                tmp.taskListToProject.get(i).setDateUpdate(serviceLocator.getDate().getDate());
                                 System.out.println("[OK]");
                                 System.out.println();
                             } else if (or.equalsIgnoreCase("description")) {
                                 System.out.println("ENTER NEW DESCRIPTION:");
-                                tmp.getValue().taskListToProject.get(i).setDescription(reader.readLine());
-                                tmp.getValue().taskListToProject.get(i).setDateUpdate(bootstrap.getDate.getDate());
+                                tmp.taskListToProject.get(i).setDescription(reader.readLine());
+                                tmp.taskListToProject.get(i).setDateUpdate(serviceLocator.getDate().getDate());
                                 System.out.println("[OK]");
                                 System.out.println();
                             }

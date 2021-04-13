@@ -1,6 +1,7 @@
 package ru.tagirov.tm.command;
 
 import ru.tagirov.tm.init.Bootstrap;
+import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +9,7 @@ import java.io.InputStreamReader;
 import java.util.Date;
 
 public abstract class AbstractCommand {
-    public Bootstrap bootstrap;
+    public ServiceLocator serviceLocator;
     protected BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     protected String id;
     protected String userName;
@@ -23,12 +24,11 @@ public abstract class AbstractCommand {
     protected String or;
     protected String enterRole;
 
-    public AbstractCommand(Bootstrap bootstrap){
-        this.bootstrap = bootstrap;
+    public AbstractCommand(){
     }
 
-    public void setBootstrap(Bootstrap bootstrap) {
-        this.bootstrap = bootstrap;
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        this.serviceLocator = serviceLocator;
     }
 
     public String getRoleCommand() {

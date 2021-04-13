@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Project{
+public class Project extends AbstractEntity{
 
-    private String id;
     private String name;
     private String description;
     private String dateCreate;
@@ -25,12 +24,15 @@ public class Project{
         this.userId = userId;
     }
 
+
+    @Override
     public String getId() {
-        return id;
+        return super.getId();
     }
 
+    @Override
     public void setId(String id) {
-        this.id = id;
+        super.setId(id);
     }
 
     public String getName() {

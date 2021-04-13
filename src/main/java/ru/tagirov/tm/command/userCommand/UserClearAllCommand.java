@@ -4,16 +4,17 @@ import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.entity.User;
+import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class UserClearAllCommand extends AbstractCommand {
 
-
-    public UserClearAllCommand(Bootstrap bootstrap) throws NoSuchAlgorithmException {
-        super(bootstrap);
+    public UserClearAllCommand(){
     }
 
     @Override
@@ -32,22 +33,28 @@ public class UserClearAllCommand extends AbstractCommand {
         return "delete all projects and tasks";
     }
 
+
+    @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
     @Override
     public void execute() throws IOException {
-        if (bootstrap.user == null) {
-            if (bootstrap.user.getRole().getTitle().equals("user")) {
-                bootstrap.projectService.removeAll();
-                bootstrap.taskService.removeAll();
+        if (serviceLocator.getUser() == null) {
+            if (serviceLocator.getUser().getRole().getTitle().equals("user")) {
+                serviceLocator.getIProjectService().removeAll();
+                serviceLocator.getITaskService().removeAll();
                 System.out.println("[OK]");
                 System.out.println();
-            } else if (bootstrap.user.getRole().getTitle().equals("admin")) {
+            } else if (serviceLocator.getUser().getRole().getTitle().equals("admin")) {
                 System.out.println("ENTER PROFILE NAME:");
                 name = reader.readLine();
-                for(Map.Entry<String, User> tmp : bootstrap.userService.findAll().entrySet()){
-                    if (tmp.getValue().getUserName().equals(name)){
-                        for (Map.Entry<String, Project> tmp1 : bootstrap.projectService.findAll().entrySet()) {
-                            if (tmp1.getValue().getName().equals(name) && tmp1.getValue().getUserId().equals(bootstrap.user.getUserId())) {
-                                bootstrap.projectService.remove(tmp1.getValue());
+                for(User tmp : serviceLocator.getIUserService().findAll()){
+                    if (tmp.getName().equals(name)){
+                        for (Project tmp1 : serviceLocator.getIProjectService().findAll()) {
+                            if (tmp1.getName().equals(name) && tmp1.getUserId().equals(serviceLocator.getUser().getId())) {
+                                serviceLocator.getIProjectService().remove(tmp1.getId());
                             }
                         }
                     }

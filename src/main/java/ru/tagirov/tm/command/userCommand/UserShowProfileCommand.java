@@ -2,14 +2,15 @@ package ru.tagirov.tm.command.userCommand;
 
 import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
+import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 public class UserShowProfileCommand extends AbstractCommand {
 
-    public UserShowProfileCommand(Bootstrap bootstrap){
-        super(bootstrap);
+    public UserShowProfileCommand(){
+
     }
 
     @Override
@@ -28,21 +29,26 @@ public class UserShowProfileCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        this.serviceLocator = serviceLocator;
+    }
+
+    @Override
     public void execute() throws IOException {
-        if(!(bootstrap.user == null)){
+        if(!(serviceLocator.getUser() == null)){
             System.out.println("[SHOW PROFILE]");
-            if(bootstrap.user.getDateUpdate() == null){
-                System.out.println("Name: " + bootstrap.user.getUserName());
-                System.out.println("Login: " +bootstrap.user.getLogin());
-                System.out.println("Display name: " + bootstrap.user.getRole().getTitle());
-                System.out.println("Date create: " + bootstrap.user.getDateCreate());
+            if(serviceLocator.getUser().getDateUpdate() == null){
+                System.out.println("Name: " + serviceLocator.getUser().getName());
+                System.out.println("Login: " + serviceLocator.getUser().getLogin());
+                System.out.println("Display name: " + serviceLocator.getUser().getRole().getTitle());
+                System.out.println("Date create: " + serviceLocator.getUser().getDateCreate());
                 System.out.println();
             }else{
-                System.out.println("Name: " + bootstrap.user.getUserName());
-                System.out.println("Login: " + bootstrap.user.getLogin());
-                System.out.println("Display name: " + bootstrap.user.getRole().getTitle());
-                System.out.println("Date create: " + bootstrap.user.getDateCreate());
-                System.out.println("Date update: " + bootstrap.user.getDateUpdate());
+                System.out.println("Name: " + serviceLocator.getUser().getName());
+                System.out.println("Login: " + serviceLocator.getUser().getLogin());
+                System.out.println("Display name: " + serviceLocator.getUser().getRole().getTitle());
+                System.out.println("Date create: " + serviceLocator.getUser().getDateCreate());
+                System.out.println("Date update: " + serviceLocator.getUser().getDateUpdate());
                 System.out.println();
             }
         }else{

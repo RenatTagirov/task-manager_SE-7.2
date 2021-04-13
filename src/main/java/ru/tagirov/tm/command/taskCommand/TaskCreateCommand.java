@@ -3,12 +3,13 @@ package ru.tagirov.tm.command.taskCommand;
 import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Task;
+import ru.tagirov.tm.init.ServiceLocator;
+
 import java.io.IOException;
 
 public class TaskCreateCommand extends AbstractCommand {
 
-    public TaskCreateCommand(Bootstrap bootstrap){
-        super(bootstrap);
+    public TaskCreateCommand() {
     }
 
     @Override
@@ -27,16 +28,21 @@ public class TaskCreateCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
+    @Override
     public void execute() throws IOException {
-        if (!(bootstrap.user == null)) {
+        if (!(serviceLocator.getUser() == null)) {
             System.out.println("[TASK CREATE]");
             System.out.println("ENTER NAME:");
             name = reader.readLine();
             System.out.println("ENTER DESCRIPTION:");
             description = reader.readLine();
-            dateCreate = bootstrap.getDate.getDate();
-            id = bootstrap.uuid.getUuid();
-            bootstrap.taskService.persist(new Task(id, name, description, dateCreate, bootstrap.user.getUserId()));
+            dateCreate = serviceLocator.getDate().getDate();
+            id = serviceLocator.getUUID().getUuid();
+            serviceLocator.getITaskService().persist(new Task(id, name, description, dateCreate, serviceLocator.getUser().getId()));
             System.out.println("[OK]");
             System.out.println();
         }else{

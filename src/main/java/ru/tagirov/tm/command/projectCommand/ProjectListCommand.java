@@ -3,13 +3,13 @@ package ru.tagirov.tm.command.projectCommand;
 import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
+import ru.tagirov.tm.init.ServiceLocator;
 
 import java.util.Map;
 
 public class ProjectListCommand extends AbstractCommand {
 
-    public ProjectListCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public ProjectListCommand() {
     }
 
     @Override
@@ -28,29 +28,34 @@ public class ProjectListCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
+    @Override
     public void execute() {
-        if(!(bootstrap.user == null)) {
+        if(!(serviceLocator.getUser() == null)) {
             System.out.println("[PROJECT LIST]");
-            if (!(bootstrap.projectService.findAll().isEmpty())) {
-                for (Map.Entry<String, Project> tmp : bootstrap.projectService.findAll().entrySet()) {
-                    if (tmp.getValue().getUserId().equals(bootstrap.user.getUserId())) {
-                        if (tmp.getValue().getDateUpdate() == null) {
+            if (!(serviceLocator.getIProjectService().findAll().isEmpty())) {
+                for (Project tmp : serviceLocator.getIProjectService().findAll()) {
+                    if (tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                        if (tmp.getDateUpdate() == null) {
                             System.out.println("Project name:");
-                            System.out.println(tmp.getValue().getName());
+                            System.out.println(tmp.getName());
                             System.out.println("Project description:");
-                            System.out.println(tmp.getValue().getDescription());
+                            System.out.println(tmp.getDescription());
                             System.out.println("Date create:");
-                            System.out.println(tmp.getValue().getDateCreate());
+                            System.out.println(tmp.getDateCreate());
                             System.out.println();
                         } else {
                             System.out.println("Project name:");
-                            System.out.println(tmp.getValue().getName());
+                            System.out.println(tmp.getName());
                             System.out.println("Project description:");
-                            System.out.println(tmp.getValue().getDescription());
+                            System.out.println(tmp.getDescription());
                             System.out.println("Date create:");
-                            System.out.println(tmp.getValue().getDateCreate());
+                            System.out.println(tmp.getDateCreate());
                             System.out.println("Date update:");
-                            System.out.println(tmp.getValue().getDateUpdate());
+                            System.out.println(tmp.getDateUpdate());
                             System.out.println();
                         }
                     }

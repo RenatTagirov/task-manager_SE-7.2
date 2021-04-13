@@ -1,17 +1,15 @@
 package ru.tagirov.tm.command.adminCommand;
 
-import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Task;
 import ru.tagirov.tm.entity.User;
+import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class AdminShowTaskToUserCommand extends AbstractCommand {
 
-    public AdminShowTaskToUserCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public AdminShowTaskToUserCommand() {
     }
 
     @Override
@@ -30,25 +28,30 @@ public class AdminShowTaskToUserCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
+    @Override
     public void execute() throws IOException {
-        if(!(bootstrap.user == null)){
+        if(!(serviceLocator.getUser() == null)){
             System.out.println("[SHOW PROJECTS TO USER]");
             System.out.println("[ENTER NAME PROFILE]");
             name = reader.readLine();
-            for(Map.Entry<String, User> tmp : bootstrap.userService.findAll().entrySet()){
-                if(tmp.getValue().getUserName().equals(name)){
-                    for (Map.Entry<String, Task> tmp1 : bootstrap.taskService.findAll().entrySet()) {
-                        if (tmp1.getValue().getUserId().equals(tmp.getValue().getUserId())) {
-                            if (tmp1.getValue().getDateUpdate() == null) {
-                                System.out.println("Task name: " + tmp1.getValue().getName());
-                                System.out.println("Task description: " + tmp1.getValue().getDescription());
-                                System.out.println("Date create: " + tmp1.getValue().getDateCreate());
+            for(User tmp : serviceLocator.getIUserService().findAll()){
+                if(tmp.getName().equals(name)){
+                    for (Task tmp1 : serviceLocator.getITaskService().findAll()) {
+                        if (tmp1.getUserId().equals(tmp.getId())) {
+                            if (tmp1.getDateUpdate() == null) {
+                                System.out.println("Task name: " + tmp1.getName());
+                                System.out.println("Task description: " + tmp1.getDescription());
+                                System.out.println("Date create: " + tmp1.getDateCreate());
                                 System.out.println();
                             }else {
-                                System.out.println("Task name: " + tmp1.getValue().getName());
-                                System.out.println("Task description: " + tmp1.getValue().getDescription());
-                                System.out.println("Date create: " + tmp1.getValue().getDateCreate());
-                                System.out.println("Date update: " + tmp1.getValue().getDateUpdate());
+                                System.out.println("Task name: " + tmp1.getName());
+                                System.out.println("Task description: " + tmp1.getDescription());
+                                System.out.println("Date create: " + tmp1.getDateCreate());
+                                System.out.println("Date update: " + tmp1.getDateUpdate());
                                 System.out.println();
                             }
                         }

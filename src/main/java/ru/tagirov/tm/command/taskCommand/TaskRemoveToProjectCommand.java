@@ -3,13 +3,14 @@ package ru.tagirov.tm.command.taskCommand;
 import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
+import ru.tagirov.tm.init.ServiceLocator;
+
 import java.io.IOException;
 import java.util.Map;
 
 public class TaskRemoveToProjectCommand extends AbstractCommand {
 
-    public TaskRemoveToProjectCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public TaskRemoveToProjectCommand() {
     }
 
     @Override
@@ -28,18 +29,23 @@ public class TaskRemoveToProjectCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
+    @Override
     public void execute() throws IOException {
-        if (!(bootstrap.user == null)) {
+        if (!(serviceLocator.getUser() == null)) {
             System.out.println("[TASK REMOVE TO PROJECT]");
             System.out.println("ENTER PROJECT NAME:");
             nameProject = reader.readLine();
             System.out.println("ENTER TASK NAME:");
             nameTask = reader.readLine();
-            for (Map.Entry<String, Project> tmp : bootstrap.projectService.findAll().entrySet()) {
-                if (tmp.getValue().getName().equals(nameProject) && tmp.getValue().getUserId().equals(bootstrap.user.getUserId())) {
-                    for (int i = 0; i < tmp.getValue().taskListToProject.size(); i++) {
-                        if (tmp.getValue().taskListToProject.get(i).getName().equals(nameTask)) {
-                            tmp.getValue().taskListToProject.remove(i);
+            for (Project tmp : serviceLocator.getIProjectService().findAll()) {
+                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                    for (int i = 0; i < tmp.taskListToProject.size(); i++) {
+                        if (tmp.taskListToProject.get(i).getName().equals(nameTask)) {
+                            tmp.taskListToProject.remove(i);
                         }
                     }
                 }

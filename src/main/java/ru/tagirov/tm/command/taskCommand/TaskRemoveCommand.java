@@ -3,13 +3,14 @@ package ru.tagirov.tm.command.taskCommand;
 import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Task;
+import ru.tagirov.tm.init.ServiceLocator;
+
 import java.io.IOException;
 import java.util.Map;
 
 public class TaskRemoveCommand extends AbstractCommand {
 
-    public TaskRemoveCommand(Bootstrap bootstrap) {
-        super(bootstrap);
+    public TaskRemoveCommand() {
     }
 
     @Override
@@ -28,14 +29,19 @@ public class TaskRemoveCommand extends AbstractCommand {
     }
 
     @Override
+    public void setServiceLocator(ServiceLocator serviceLocator) {
+        super.setServiceLocator(serviceLocator);
+    }
+
+    @Override
     public void execute() throws IOException {
-        if (!(bootstrap.user == null)) {
+        if (!(serviceLocator.getUser() == null)) {
             System.out.println("[TASK REMOVE]");
             System.out.println("ENTER TASK NAME:");
             Task task = null;
-            for (Map.Entry<String, Task> tmp : bootstrap.taskService.findAll().entrySet()) {
-                if (tmp.getValue().getName().equals(name) && tmp.getValue().getUserId().equals(bootstrap.user.getUserId()))
-                    bootstrap.taskService.remove(tmp.getValue());
+            for (Task tmp : serviceLocator.getITaskService().findAll()) {
+                if (tmp.getName().equals(name) && tmp.getUserId().equals(serviceLocator.getUser().getId()))
+                    serviceLocator.getITaskService().remove(tmp.getId());
             }
             System.out.println("[OK]");
             System.out.println();

@@ -3,9 +3,9 @@ package ru.tagirov.tm.util;
 import java.util.UUID;
 
 public class UUIDUtil {
-    String id;
+    private  static String id;
 
-    public String getUuid(){
+    public static String getUuid(){
         return id = UUID.randomUUID().toString();
     }
 }

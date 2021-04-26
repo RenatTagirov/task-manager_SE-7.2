@@ -4,10 +4,9 @@ import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.init.ServiceLocator;
+import ru.tagirov.tm.util.DateUtil;
 
 import java.io.IOException;
-
-import java.util.Map;
 
 public class TaskUpdateToProjectCommand extends AbstractCommand {
 
@@ -37,12 +36,12 @@ public class TaskUpdateToProjectCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if (!(serviceLocator.getUser() == null)) {
+        if (!(Bootstrap.user == null)) {
             System.out.println("[TASK UPDATE TO PROJECT]");
             System.out.println("ENTER PROJECT NAME:");
             nameProject = reader.readLine();
             for (Project tmp : serviceLocator.getIProjectService().findAll()) {
-                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                     System.out.println("ENTER TASK NAME:");
                     nameTask = reader.readLine();
                     for (int i = 0; i < tmp.taskListToProject.size(); i++) {
@@ -53,13 +52,13 @@ public class TaskUpdateToProjectCommand extends AbstractCommand {
                             if (or.equalsIgnoreCase("name")) {
                                 System.out.println("ENTER NEW NAME:");
                                 tmp.taskListToProject.get(i).setName(reader.readLine());
-                                tmp.taskListToProject.get(i).setDateUpdate(serviceLocator.getDate().getDate());
+                                tmp.taskListToProject.get(i).setDateUpdate(DateUtil.getDate());
                                 System.out.println("[OK]");
                                 System.out.println();
                             } else if (or.equalsIgnoreCase("description")) {
                                 System.out.println("ENTER NEW DESCRIPTION:");
                                 tmp.taskListToProject.get(i).setDescription(reader.readLine());
-                                tmp.taskListToProject.get(i).setDateUpdate(serviceLocator.getDate().getDate());
+                                tmp.taskListToProject.get(i).setDateUpdate(DateUtil.getDate());
                                 System.out.println("[OK]");
                                 System.out.println();
                             }

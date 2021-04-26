@@ -5,7 +5,6 @@ import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 public class UserShowProfileCommand extends AbstractCommand {
 
@@ -35,20 +34,20 @@ public class UserShowProfileCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if(!(serviceLocator.getUser() == null)){
+        if(!(Bootstrap.user == null)){
             System.out.println("[SHOW PROFILE]");
-            if(serviceLocator.getUser().getDateUpdate() == null){
-                System.out.println("Name: " + serviceLocator.getUser().getName());
-                System.out.println("Login: " + serviceLocator.getUser().getLogin());
-                System.out.println("Display name: " + serviceLocator.getUser().getRole().getTitle());
-                System.out.println("Date create: " + serviceLocator.getUser().getDateCreate());
+            if(Bootstrap.user.getDateUpdate() == null){
+                System.out.println("Name: " + Bootstrap.user.getName());
+                System.out.println("Login: " + Bootstrap.user.getLogin());
+                System.out.println("Display name: " + Bootstrap.user.getRole().getTitle());
+                System.out.println("Date create: " + Bootstrap.user.getDateCreate());
                 System.out.println();
             }else{
-                System.out.println("Name: " + serviceLocator.getUser().getName());
-                System.out.println("Login: " + serviceLocator.getUser().getLogin());
-                System.out.println("Display name: " + serviceLocator.getUser().getRole().getTitle());
-                System.out.println("Date create: " + serviceLocator.getUser().getDateCreate());
-                System.out.println("Date update: " + serviceLocator.getUser().getDateUpdate());
+                System.out.println("Name: " + Bootstrap.user.getName());
+                System.out.println("Login: " + Bootstrap.user.getLogin());
+                System.out.println("Display name: " + Bootstrap.user.getRole().getTitle());
+                System.out.println("Date create: " + Bootstrap.user.getDateCreate());
+                System.out.println("Date update: " + Bootstrap.user.getDateUpdate());
                 System.out.println();
             }
         }else{

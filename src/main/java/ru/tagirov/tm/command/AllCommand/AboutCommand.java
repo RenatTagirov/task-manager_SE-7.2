@@ -1,5 +1,6 @@
 package ru.tagirov.tm.command.AllCommand;
 
+import com.jcabi.manifests.Manifests;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.init.ServiceLocator;
 
@@ -31,6 +32,7 @@ public class AboutCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        System.out.println("about");
+        String version = Manifests.read("JCabi-Version");
+        System.out.println("version is " + version);
     }
 }

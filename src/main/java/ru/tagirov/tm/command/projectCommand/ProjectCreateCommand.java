@@ -2,7 +2,10 @@ package ru.tagirov.tm.command.projectCommand;
 
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.init.ServiceLocator;
+import ru.tagirov.tm.util.DateUtil;
+import ru.tagirov.tm.util.UUIDUtil;
 
 import java.io.IOException;
 
@@ -33,15 +36,15 @@ public class ProjectCreateCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if(!(serviceLocator.getUser() == null)) {
+        if(!(Bootstrap.user == null)) {
             System.out.println("[PROJECT CREATE]");
             System.out.println("ENTER NAME:");
             nameProject = reader.readLine();
             System.out.println("ENTER DESCRIPTION:");
             description = reader.readLine();
-            dateCreate = serviceLocator.getDate().getDate();
-            id = serviceLocator.getUUID().getUuid();
-            serviceLocator.getIProjectService().persist(new Project(id, nameProject, description, dateCreate, serviceLocator.getUser().getId()));
+            dateCreate = DateUtil.getDate();
+            id = UUIDUtil.getUuid();
+            serviceLocator.getIProjectService().persist(new Project(id, nameProject, description, dateCreate, Bootstrap.user.getId()));
             System.out.println("[OK]");
             System.out.println();
         }else{

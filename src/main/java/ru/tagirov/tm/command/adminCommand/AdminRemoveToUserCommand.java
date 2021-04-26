@@ -2,6 +2,7 @@ package ru.tagirov.tm.command.adminCommand;
 
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.User;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class AdminRemoveToUserCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if(!(serviceLocator.getUser() == null)){
+        if(!(Bootstrap.user == null)){
             System.out.println("[USER REMOVE]");
             System.out.println("ENTER USER NAME:");
             name = reader.readLine();

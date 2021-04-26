@@ -13,4 +13,15 @@ public enum  Role {
     public String getTitle(){
         return title;
     }
+
+    public static Role getRole(String role){
+        Role newRole = null;
+        for (Role value : Role.values()) {
+            if (value.getTitle().equalsIgnoreCase(role)) {
+                 newRole = value;
+                break;
+            }
+        }
+        return newRole;
+    }
 }

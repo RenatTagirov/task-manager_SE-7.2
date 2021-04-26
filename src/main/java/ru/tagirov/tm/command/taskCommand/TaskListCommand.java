@@ -5,8 +5,6 @@ import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Task;
 import ru.tagirov.tm.init.ServiceLocator;
 
-import java.util.Map;
-
 public class TaskListCommand extends AbstractCommand {
 
     public TaskListCommand() {
@@ -34,11 +32,11 @@ public class TaskListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (!(serviceLocator.getUser() == null)) {
+        if (!(Bootstrap.user == null)) {
             System.out.println("[TASK LIST]");
             if (!(serviceLocator.getITaskService().findAll().isEmpty())) {
                 for (Task tmp : serviceLocator.getITaskService().findAll()) {
-                    if (tmp.getDateUpdate() == null && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                    if (tmp.getDateUpdate() == null && tmp.getUserId().equals(Bootstrap.user.getId())) {
                         System.out.println("Task name: " + tmp.getName());
                         System.out.println("Task description: " + tmp.getDescription());
                         System.out.println("Date create: " + tmp.getDateCreate());

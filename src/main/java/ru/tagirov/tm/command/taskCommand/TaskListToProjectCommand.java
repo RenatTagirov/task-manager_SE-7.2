@@ -6,7 +6,6 @@ import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class TaskListToProjectCommand extends AbstractCommand {
 
@@ -35,7 +34,7 @@ public class TaskListToProjectCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if (!(serviceLocator.getUser() == null)) {
+        if (!(Bootstrap.user == null)) {
             System.out.println("[TASK LIST TO PROJECT]");
             System.out.println("ENTER PROJECT NAME:");
             nameProject = reader.readLine();
@@ -43,7 +42,7 @@ public class TaskListToProjectCommand extends AbstractCommand {
             if (!(serviceLocator.getIProjectService().findAll().isEmpty())) {
                 for (Project tmp : serviceLocator.getIProjectService().findAll()) {
                     if (!(tmp.taskListToProject.isEmpty())) {
-                        if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                        if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                             for (int i = 0; i < tmp.taskListToProject.size(); i++) {
                                 if (tmp.taskListToProject.get(i).getDateUpdate() == null) {
                                     System.out.println(count + ". " + "Task name:");

@@ -5,8 +5,6 @@ import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.init.ServiceLocator;
 
-import java.util.Map;
-
 public class ProjectListCommand extends AbstractCommand {
 
     public ProjectListCommand() {
@@ -34,11 +32,11 @@ public class ProjectListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if(!(serviceLocator.getUser() == null)) {
+        if(!(Bootstrap.user == null)) {
             System.out.println("[PROJECT LIST]");
             if (!(serviceLocator.getIProjectService().findAll().isEmpty())) {
                 for (Project tmp : serviceLocator.getIProjectService().findAll()) {
-                    if (tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                    if (tmp.getUserId().equals(Bootstrap.user.getId())) {
                         if (tmp.getDateUpdate() == null) {
                             System.out.println("Project name:");
                             System.out.println(tmp.getName());

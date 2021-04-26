@@ -1,9 +1,7 @@
 package ru.tagirov.tm.service;
 
 import ru.tagirov.tm.entity.AbstractEntity;
-import ru.tagirov.tm.repository.AbstractRepository;
 import ru.tagirov.tm.repository.IRepository;
-import ru.tagirov.tm.repository.impl.TaskRepository;
 
 import java.util.Collection;
 

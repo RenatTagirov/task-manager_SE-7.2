@@ -4,9 +4,9 @@ import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.init.ServiceLocator;
+import ru.tagirov.tm.util.DateUtil;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class ProjectUpdateCommand extends AbstractCommand {
 
@@ -35,7 +35,7 @@ public class ProjectUpdateCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if(!(serviceLocator.getUser() == null)) {
+        if(!(Bootstrap.user == null)) {
             System.out.println("[PROJECT UPDATE]");
             System.out.println("ENTER PROJECT NAME:");
             name = reader.readLine();
@@ -44,20 +44,20 @@ public class ProjectUpdateCommand extends AbstractCommand {
             or = reader.readLine();
             if (or.equalsIgnoreCase("name")) {
                 for (Project tmp : serviceLocator.getIProjectService().findAll()) {
-                    if (tmp.getName().equals(name) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                    if (tmp.getName().equals(name) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                         System.out.println("ENTER NEW NAME:");
                         tmp.setName(reader.readLine());
-                        tmp.setDateUpdate(serviceLocator.getDate().getDate());
+                        tmp.setDateUpdate(DateUtil.getDate());
                     }
                 }
                 System.out.println("[OK]");
                 System.out.println();
             } else if (or.equalsIgnoreCase("description")) {
                 for (Project tmp : serviceLocator.getIProjectService().findAll()) {
-                    if (tmp.getName().equals(name) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                    if (tmp.getName().equals(name) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                         System.out.println("ENTER NEW DESCRIPTION:");
                         tmp.setDescription(reader.readLine());
-                        tmp.setDateUpdate(serviceLocator.getDate().getDate());
+                        tmp.setDateUpdate(DateUtil.getDate());
                     }
                 }
                 System.out.println("[OK]");

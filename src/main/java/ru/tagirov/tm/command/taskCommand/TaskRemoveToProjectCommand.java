@@ -6,7 +6,6 @@ import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class TaskRemoveToProjectCommand extends AbstractCommand {
 
@@ -35,14 +34,14 @@ public class TaskRemoveToProjectCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if (!(serviceLocator.getUser() == null)) {
+        if (!(Bootstrap.user == null)) {
             System.out.println("[TASK REMOVE TO PROJECT]");
             System.out.println("ENTER PROJECT NAME:");
             nameProject = reader.readLine();
             System.out.println("ENTER TASK NAME:");
             nameTask = reader.readLine();
             for (Project tmp : serviceLocator.getIProjectService().findAll()) {
-                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                     for (int i = 0; i < tmp.taskListToProject.size(); i++) {
                         if (tmp.taskListToProject.get(i).getName().equals(nameTask)) {
                             tmp.taskListToProject.remove(i);

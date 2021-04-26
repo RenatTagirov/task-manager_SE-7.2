@@ -18,9 +18,6 @@ import ru.tagirov.tm.service.IUserService;
 import ru.tagirov.tm.service.impl.ProjectService;
 import ru.tagirov.tm.service.impl.TaskService;
 import ru.tagirov.tm.service.impl.UserService;
-import ru.tagirov.tm.util.DateUtil;
-import ru.tagirov.tm.util.Md5Util;
-import ru.tagirov.tm.util.UUIDUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,38 +40,35 @@ public class Bootstrap implements ServiceLocator{
         return new Reflections("ru.tagirov.tm").getSubTypesOf(AbstractCommand.class);
     }
 
-    public Md5Util md5 = new Md5Util();
-    public DateUtil date = new DateUtil();
-    public UUIDUtil uuid = new UUIDUtil();
-    public Role role = Role.USER;
+    public static Role role = Role.USER;
+    public static User user;
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     String str;
 
-    public User user;
 
     public void start() throws IOException,InstantiationException, IllegalAccessException {
         init();
         System.out.println("***WELCOME TO TASK MANAGER***");
         while (!(str = reader.readLine()).equalsIgnoreCase("Exit")) {
             if (user == null) {
-                for (Map.Entry<String, AbstractCommand> tmp : commands.entrySet()) {
-                    if (tmp.getKey().equalsIgnoreCase(str) && tmp.getValue().getRoleCommand().equals("all")) {
-                        tmp.getValue().execute();
+                for (AbstractCommand tmp : getCommands()) {
+                    if (tmp.getName().equalsIgnoreCase(str) && tmp.getRoleCommand().equals("all")) {
+                        tmp.execute();
                     }
                 }
             } else if (user.getRole().getTitle().equals("user")) {
-                for (Map.Entry<String, AbstractCommand> tmp : commands.entrySet()) {
-                    if (tmp.getKey().equalsIgnoreCase(str) && (tmp.getValue().getRoleCommand().equals("user") || tmp.getValue().getRoleCommand().equals("all"))) {
-                        tmp.getValue().execute();
-                    } else if (tmp.getKey().equalsIgnoreCase(str) && tmp.getValue().getRoleCommand().equals("admin")) {
+                for (AbstractCommand tmp : getCommands()) {
+                    if (tmp.getName().equalsIgnoreCase(str) && (tmp.getRoleCommand().equals("user") || tmp.getRoleCommand().equals("all"))) {
+                        tmp.execute();
+                    } else if (tmp.getName().equalsIgnoreCase(str) && tmp.getRoleCommand().equals("admin")) {
                         System.out.println("[THE COMMAND IS NOT VALID!]");
                         System.out.println();
                     }
                 }
             } else if (user.getRole().getTitle().equals("admin")) {
-                for (Map.Entry<String, AbstractCommand> tmp : commands.entrySet()) {
-                    if (tmp.getKey().equalsIgnoreCase(str)) {
-                        tmp.getValue().execute();
+                for (AbstractCommand tmp : getCommands()) {
+                    if (tmp.getName().equalsIgnoreCase(str)) {
+                        tmp.execute();
                     }
                 }
             } else {
@@ -121,43 +115,8 @@ public class Bootstrap implements ServiceLocator{
     }
 
     @Override
-    public List<AbstractCommand> getCommands() {
-        return (List<AbstractCommand>) commands.values();
-    }
-
-    @Override
-    public User getUser() {
-        return user;
-    }
-
-    @Override
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public DateUtil getDate() {
-        return date;
-    }
-
-    @Override
-    public Md5Util getMd5() {
-        return md5;
-    }
-
-    @Override
-    public UUIDUtil getUUID() {
-        return uuid;
-    }
-
-    @Override
-    public Role getRole() {
-        return role;
-    }
-
-    @Override
-    public void setRole(Role role) {
-        this.role = role;
+    public Collection<AbstractCommand> getCommands() {
+        return commands.values();
     }
 }
 //    project create

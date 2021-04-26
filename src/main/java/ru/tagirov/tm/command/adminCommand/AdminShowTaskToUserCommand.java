@@ -3,6 +3,7 @@ package ru.tagirov.tm.command.adminCommand;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Task;
 import ru.tagirov.tm.entity.User;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class AdminShowTaskToUserCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if(!(serviceLocator.getUser() == null)){
+        if(!(Bootstrap.user == null)){
             System.out.println("[SHOW PROJECTS TO USER]");
             System.out.println("[ENTER NAME PROFILE]");
             name = reader.readLine();

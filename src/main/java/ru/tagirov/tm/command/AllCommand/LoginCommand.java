@@ -4,10 +4,9 @@ import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.entity.User;
 import ru.tagirov.tm.init.ServiceLocator;
+import ru.tagirov.tm.util.Md5Util;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Map;
 
 public class LoginCommand extends AbstractCommand {
 
@@ -36,15 +35,15 @@ public class LoginCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if(serviceLocator.getUser() == null){
+        if(Bootstrap.user == null){
             System.out.println("[LOGIN]");
             System.out.println("ENTER YOU LOGIN:");
             login = reader.readLine();
             System.out.println("ENTER YOU PASSWORD:");
-            password = serviceLocator.getMd5().getMd5(reader.readLine());
+            password = Md5Util.getMd5(reader.readLine());
             for (User tmp : serviceLocator.getIUserService().findAll()) {
                 if (tmp.getLogin().equals(login) && tmp.getPassword().equals(password)) {
-                    serviceLocator.setUser(tmp);
+                    Bootstrap.user = tmp;
                     System.out.println("[OK]");
                     System.out.println();
                     break;

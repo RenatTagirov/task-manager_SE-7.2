@@ -5,7 +5,6 @@ import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 public class ExitCommand extends AbstractCommand {
 
@@ -34,8 +33,8 @@ public class ExitCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if(!(serviceLocator.getUser() == null)){
-            serviceLocator.setUser(null);
+        if(!(Bootstrap.user == null)){
+            Bootstrap.user = null;
             System.out.println();
         }else{
             System.out.println("[YOU ARE ALREADY LOGGED OUT OF YOUR ACCOUNT!]");

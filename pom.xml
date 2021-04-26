@@ -35,8 +35,22 @@
       <artifactId>reflections</artifactId>
       <version>0.9.12</version>
     </dependency>
+    <dependency>
+      <groupId>com.jcabi</groupId>
+      <artifactId>jcabi-manifests</artifactId>
+      <version>1.1</version>
+    </dependency>
   </dependencies>
 
+
+  <scm>
+    <connection>scm:svn:http://127.0.0.1/dummy</connection>
+    <developerConnection>
+      scm:svn:https://127.0.0.1/dummy
+    </developerConnection>
+    <tag>HEAD</tag>
+    <url>http://127.0.0.1/dummy</url>
+  </scm>
 
 
   <developers>
@@ -97,6 +111,31 @@
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>buildnumber-maven-plugin</artifactId>
+          <version>1.4</version>
+          <executions>
+            <execution>
+              <id>buildNumber</id>
+              <phase>validate</phase>
+              <goals>
+                <goal>create</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <format>{0,number}</format>
+            <items>
+              <item>buildNumber</item>
+            </items>
+            <doCheck>false</doCheck>
+            <doUpdate>false</doUpdate>
+            <revisionOnScmFailure>
+              unknownBuild
+            </revisionOnScmFailure>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>

@@ -8,8 +8,6 @@ import ru.tagirov.tm.entity.User;
 import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Map;
 
 public class UserListAllCommand extends AbstractCommand {
 
@@ -35,10 +33,10 @@ public class UserListAllCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if(!(serviceLocator.getUser() == null)) {
+        if(!(Bootstrap.user == null)) {
             System.out.println("[LIST ALL]");
             int count = 1;
-            if (serviceLocator.getUser().getRole().getTitle().equals("user")) {
+            if (Bootstrap.user.getRole().getTitle().equals("user")) {
                 if (!(serviceLocator.getIProjectService().findAll().isEmpty())) {
                     System.out.println("PROJECTS:");
                     for (Project tmp : serviceLocator.getIProjectService().findAll()) {
@@ -59,7 +57,7 @@ public class UserListAllCommand extends AbstractCommand {
                     System.out.println();
                 }
                 System.out.println();
-            }else if (serviceLocator.getUser().getRole().getTitle().equals("admin")) {
+            }else if (Bootstrap.user.getRole().getTitle().equals("admin")) {
                 System.out.println("ENTER PROFILE NAME:");
                 name = reader.readLine();
                 for(User tmp : serviceLocator.getIUserService().findAll()) {

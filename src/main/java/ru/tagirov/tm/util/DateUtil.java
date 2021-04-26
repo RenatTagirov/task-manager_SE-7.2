@@ -4,11 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtil {
-    SimpleDateFormat formatForDateNow  = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-    Date date;
-    String uuid;
+    private static SimpleDateFormat formatForDateNow  = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+    private static Date date;
+    private static String uuid;
 
-    public String getDate(){
+    public static String getDate(){
         date = new java.util.Date();
         uuid = formatForDateNow.format(date);
         return uuid;

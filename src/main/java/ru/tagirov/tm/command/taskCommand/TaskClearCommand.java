@@ -34,10 +34,10 @@ public class TaskClearCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (!(serviceLocator.getUser() == null)) {
+        if (!(Bootstrap.user == null)) {
             System.out.println("[TASK CLEAR]");
             for (Task tmp : serviceLocator.getITaskService().findAll()) {
-                if (tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                if (tmp.getUserId().equals(Bootstrap.user.getId())) {
                     serviceLocator.getITaskService().remove(tmp.getId());
                 }
             }

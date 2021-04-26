@@ -2,6 +2,7 @@ package ru.tagirov.tm.command.projectCommand;
 
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
@@ -33,12 +34,12 @@ public class ProjectRemoveCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if(!(serviceLocator.getUser() == null)) {
+        if(!(Bootstrap.user == null)) {
             System.out.println("[PROJECT REMOVE]");
             System.out.println("ENTER PROJECT NAME:");
             name = reader.readLine();
             for (Project tmp : serviceLocator.getIProjectService().findAll()) {
-                if (tmp.getName().equals(name) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                if (tmp.getName().equals(name) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                     serviceLocator.getIProjectService().remove(tmp.getId());
                 }
             }

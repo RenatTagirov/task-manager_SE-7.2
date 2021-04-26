@@ -4,9 +4,6 @@ import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.init.ServiceLocator;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.Map;
-
 public class HelpCommand extends AbstractCommand {
 
 
@@ -36,21 +33,21 @@ public class HelpCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (serviceLocator.getUser() == null){
+        if (Bootstrap.user == null){
             for(AbstractCommand tmp : serviceLocator.getCommands()){
                 if (tmp.getRoleCommand().equals("all")){
                     System.out.println(tmp.getName() + " - " + tmp.getDescription());
                 }
             }
             System.out.println();
-        }else if(serviceLocator.getUser().getRole().getTitle().equals("user")){
+        }else if(Bootstrap.user.getRole().getTitle().equals("user")){
             for(AbstractCommand tmp : serviceLocator.getCommands()){
                 if (tmp.getRoleCommand().equals("all") || tmp.getRoleCommand().equals("user") ){
                     System.out.println(tmp.getName() + " - " + tmp.getDescription());
                 }
             }
             System.out.println();
-        }else if(serviceLocator.getUser().getRole().getTitle().equals("admin")){
+        }else if(Bootstrap.user.getRole().getTitle().equals("admin")){
             for(AbstractCommand tmp : serviceLocator.getCommands()){
                 System.out.println(tmp.getName() + " - " + tmp.getDescription());
             }

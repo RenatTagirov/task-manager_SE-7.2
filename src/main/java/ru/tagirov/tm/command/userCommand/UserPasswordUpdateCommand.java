@@ -4,10 +4,9 @@ import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.User;
 import ru.tagirov.tm.init.ServiceLocator;
+import ru.tagirov.tm.util.Md5Util;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Map;
 
 public class UserPasswordUpdateCommand extends AbstractCommand {
 
@@ -38,15 +37,15 @@ public class UserPasswordUpdateCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if(!(serviceLocator.getUser() == null)){
+        if(!(Bootstrap.user == null)){
                 System.out.println("[PASSWORD UPDATE]");
                 System.out.println("ENTER YOU OLD PASSWORD:");
-                password = serviceLocator.getMd5().getMd5(reader.readLine());
-                if(password.equals(serviceLocator.getUser().getPassword())){
+                password = Md5Util.getMd5(reader.readLine());
+                if(password.equals(Bootstrap.user.getPassword())){
                     System.out.println("ENTER YOU NEW PASSWORD:");
-                    newPassword = serviceLocator.getMd5().getMd5(reader.readLine());
+                    newPassword = Md5Util.getMd5(reader.readLine());
                     for(User tmp : serviceLocator.getIUserService().findAll()){
-                        if(tmp.getId().equals(serviceLocator.getUser().getId())){
+                        if(tmp.getId().equals(Bootstrap.user.getId())){
                             tmp.setPassword(newPassword);
                             System.out.println("[OK]");
                             System.out.println();

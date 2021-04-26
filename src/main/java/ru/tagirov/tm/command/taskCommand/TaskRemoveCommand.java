@@ -6,7 +6,6 @@ import ru.tagirov.tm.entity.Task;
 import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class TaskRemoveCommand extends AbstractCommand {
 
@@ -35,12 +34,12 @@ public class TaskRemoveCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if (!(serviceLocator.getUser() == null)) {
+        if (!(Bootstrap.user == null)) {
             System.out.println("[TASK REMOVE]");
             System.out.println("ENTER TASK NAME:");
             Task task = null;
             for (Task tmp : serviceLocator.getITaskService().findAll()) {
-                if (tmp.getName().equals(name) && tmp.getUserId().equals(serviceLocator.getUser().getId()))
+                if (tmp.getName().equals(name) && tmp.getUserId().equals(Bootstrap.user.getId()))
                     serviceLocator.getITaskService().remove(tmp.getId());
             }
             System.out.println("[OK]");

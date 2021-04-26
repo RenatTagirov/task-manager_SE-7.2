@@ -36,7 +36,7 @@ public class TaskAddToProjectCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if (!(serviceLocator.getUser() == null)) {
+        if (!(Bootstrap.user == null)) {
             System.out.println("[TASK ADD TO PROJECT]");
             System.out.println("ENTER TASK NAME:");
             nameTask = reader.readLine();
@@ -48,7 +48,7 @@ public class TaskAddToProjectCommand extends AbstractCommand {
             String dateCreate1 = null;
             String id2 = null;
             for (Task tmp : serviceLocator.getITaskService().findAll()) {
-                if (tmp.getName().equals(nameTask) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                if (tmp.getName().equals(nameTask) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                     id1 = tmp.getId();
                     name1 = tmp.getName();
                     description1 = tmp.getDescription();
@@ -56,13 +56,13 @@ public class TaskAddToProjectCommand extends AbstractCommand {
                 }
             }
             for (Project tmp : serviceLocator.getIProjectService().findAll()) {
-                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
-                    tmp.taskListToProject.add(new Task(id1, name1, description1, dateCreate1, serviceLocator.getUser().getId()));
+                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(Bootstrap.user.getId())) {
+                    tmp.taskListToProject.add(new Task(id1, name1, description1, dateCreate1, Bootstrap.user.getId()));
                     id2 = tmp.getId();
                 }
             }
             for (Project tmp : serviceLocator.getIProjectService().findAll()) {
-                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                     for (int i = 0; i < tmp.taskListToProject.size(); i++) {
                         if (tmp.taskListToProject.get(i).getName().equals(nameTask)) {
                             tmp.taskListToProject.get(i).setIdProject(id2);
@@ -72,7 +72,7 @@ public class TaskAddToProjectCommand extends AbstractCommand {
             }
 
             for (Task tmp : serviceLocator.getITaskService().findAll()) {
-                if (tmp.getName().equals(nameTask) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                if (tmp.getName().equals(nameTask) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                     serviceLocator.getIUserService().remove(tmp.getId());
                 }
             }

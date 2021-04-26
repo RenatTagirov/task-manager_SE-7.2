@@ -5,10 +5,10 @@ import java.security.NoSuchAlgorithmException;
 
 public class Md5Util {
 
-    public String getMd5(String password){
-        StringBuilder builder = null;
-        MessageDigest md5;
+    private static StringBuilder builder = null;
+    private static MessageDigest md5;
 
+    public static String getMd5(String password){
         try {
             md5 = MessageDigest.getInstance("MD5");
             byte[] bytes = md5.digest(password.getBytes());

@@ -41,19 +41,19 @@ public class UserClearAllCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if (serviceLocator.getUser() == null) {
-            if (serviceLocator.getUser().getRole().getTitle().equals("user")) {
+        if (Bootstrap.user == null) {
+            if (Bootstrap.user.getRole().getTitle().equals("user")) {
                 serviceLocator.getIProjectService().removeAll();
                 serviceLocator.getITaskService().removeAll();
                 System.out.println("[OK]");
                 System.out.println();
-            } else if (serviceLocator.getUser().getRole().getTitle().equals("admin")) {
+            } else if (Bootstrap.user.getRole().getTitle().equals("admin")) {
                 System.out.println("ENTER PROFILE NAME:");
                 name = reader.readLine();
                 for(User tmp : serviceLocator.getIUserService().findAll()){
                     if (tmp.getName().equals(name)){
                         for (Project tmp1 : serviceLocator.getIProjectService().findAll()) {
-                            if (tmp1.getName().equals(name) && tmp1.getUserId().equals(serviceLocator.getUser().getId())) {
+                            if (tmp1.getName().equals(name) && tmp1.getUserId().equals(Bootstrap.user.getId())) {
                                 serviceLocator.getIProjectService().remove(tmp1.getId());
                             }
                         }

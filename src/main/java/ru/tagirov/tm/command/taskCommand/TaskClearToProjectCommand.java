@@ -35,12 +35,12 @@ public class TaskClearToProjectCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if (!(serviceLocator.getUser() == null)) {
+        if (!(Bootstrap.user == null)) {
             System.out.println("[TASK CLEAR TO PROJECT]");
             System.out.println("TASK PROJECT NAME:");
             nameProject = reader.readLine();
             for (Project tmp : serviceLocator.getIProjectService().findAll()) {
-                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                     serviceLocator.getIProjectService().remove(tmp.getId());
                 }
             }

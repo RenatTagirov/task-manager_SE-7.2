@@ -4,6 +4,7 @@ import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.User;
 import ru.tagirov.tm.init.ServiceLocator;
+import ru.tagirov.tm.util.DateUtil;
 
 import java.io.IOException;
 import java.util.Date;
@@ -36,7 +37,7 @@ public class UserUpdateProfileCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if(!(serviceLocator.getUser() == null)){
+        if(!(Bootstrap.user == null)){
             System.out.println("[UPDATE PROFILE]");
             System.out.println("WHAT YOU WANT TO UPDATE?");
             System.out.println("NAME OR LOGIN:");
@@ -44,26 +45,26 @@ public class UserUpdateProfileCommand extends AbstractCommand {
             if(or.equalsIgnoreCase("name") || or.equalsIgnoreCase("login")){
                 if (or.equalsIgnoreCase("name")){
                     for(User tmp : serviceLocator.getIUserService().findAll()){
-                        if(tmp.getId().equals(serviceLocator.getUser().getId())){
+                        if(tmp.getId().equals(Bootstrap.user.getId())){
                             System.out.println("ENTER NEW NAME:");
                             userName = reader.readLine();
                             tmp.setName(userName);
-                            tmp.setDateUpdate(serviceLocator.getDate().getDate());
-                            serviceLocator.getUser().setName(userName);
-                            serviceLocator.getUser().setDateUpdate(tmp.getDateUpdate());
+                            tmp.setDateUpdate(DateUtil.getDate());
+                            Bootstrap.user.setName(userName);
+                            Bootstrap.user.setDateUpdate(tmp.getDateUpdate());
                             System.out.println("[OK]");
                             System.out.println();
                         }
                     }
                 }if (or.equalsIgnoreCase("login")){
                     for(User tmp : serviceLocator.getIUserService().findAll()){
-                        if(tmp.getId().equals(serviceLocator.getUser().getId())){
+                        if(tmp.getId().equals(Bootstrap.user.getId())){
                             System.out.println("ENTER NEW LOGIN:");
                             login= reader.readLine();
                             tmp.setLogin(login);
-                            tmp.setDateUpdate(serviceLocator.getDate().getDate());
-                            serviceLocator.getUser().setLogin(login);
-                            serviceLocator.getUser().setDateUpdate(tmp.getDateUpdate());
+                            tmp.setDateUpdate(DateUtil.getDate());
+                            Bootstrap.user.setLogin(login);
+                            Bootstrap.user.setDateUpdate(tmp.getDateUpdate());
                             System.out.println("[OK]");
                             System.out.println();
                         }

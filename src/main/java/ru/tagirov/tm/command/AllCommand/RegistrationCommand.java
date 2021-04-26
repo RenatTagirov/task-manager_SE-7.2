@@ -5,6 +5,9 @@ import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.enumeration.Role;
 import ru.tagirov.tm.entity.User;
 import ru.tagirov.tm.init.ServiceLocator;
+import ru.tagirov.tm.util.DateUtil;
+import ru.tagirov.tm.util.Md5Util;
+import ru.tagirov.tm.util.UUIDUtil;
 
 import java.io.IOException;
 
@@ -35,26 +38,26 @@ public class RegistrationCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if (serviceLocator.getUser() == null) {
+        if (Bootstrap.user == null) {
             System.out.println("[REGISTRATION]");
             System.out.println("YOU USER OR ADMIN?");
             enterRole = reader.readLine();
             if (enterRole.equalsIgnoreCase("user") || enterRole.equalsIgnoreCase("admin")){
-                for (Role value : Role.values()) {
-                    if (value.getTitle().equalsIgnoreCase(enterRole)) {
-                        serviceLocator.setRole(value);
-                        break;
-                    }
-                }
                 System.out.println("ENTER NAME:");
                 userName = reader.readLine();
                 System.out.println("ENTER LOGIN:");
                 login = reader.readLine();
                 System.out.println("ENTER PASSWORD:");
-                password = serviceLocator.getMd5().getMd5(reader.readLine());
-                dateCreate = serviceLocator.getDate().getDate();
-                id = serviceLocator.getUUID().getUuid();
-                serviceLocator.getIUserService().persist(new User(id, userName, login, password, serviceLocator.getRole(), dateCreate));
+                password = Md5Util.getMd5(reader.readLine());
+                dateCreate = DateUtil.getDate();
+                id = UUIDUtil.getUuid();
+                System.out.println(id);
+                System.out.println(userName);
+                System.out.println(login);
+                System.out.println(password);
+                System.out.println(Role.getRole(enterRole).getTitle());
+                System.out.println(dateCreate);
+                serviceLocator.getIUserService().persist(new User(id, userName, login, password, Role.getRole(enterRole), dateCreate));
                 System.out.println("[OK]");
                 System.out.println();
             }

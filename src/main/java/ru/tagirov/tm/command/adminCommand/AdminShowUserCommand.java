@@ -35,7 +35,7 @@ public class AdminShowUserCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if(!(serviceLocator.getUser() == null)){
+        if(!(Bootstrap.user == null)){
             System.out.println("[SHOW PROFILE]");
             System.out.println("[ENTER NAME PROFILE]");
             name = reader.readLine();

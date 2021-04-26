@@ -2,6 +2,7 @@ package ru.tagirov.tm.command.projectCommand;
 
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
+import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.init.ServiceLocator;
 
 public class ProjectClearCommand extends AbstractCommand {
@@ -32,10 +33,10 @@ public class ProjectClearCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if(!(serviceLocator.getUser() == null)) {
+        if(!(Bootstrap.user == null)) {
             System.out.println("[PROJECT CLEAR]");
             for (Project tmp : serviceLocator.getIProjectService().findAll()) {
-                if (tmp.getUserId().equals(serviceLocator.getUser().getId())) {
+                if (tmp.getUserId().equals(Bootstrap.user.getId())) {
                     serviceLocator.getIProjectService().remove(tmp.getId());
                 }
             }

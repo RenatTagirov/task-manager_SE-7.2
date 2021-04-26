@@ -6,7 +6,6 @@ import ru.tagirov.tm.entity.User;
 import ru.tagirov.tm.init.ServiceLocator;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class AdminShowAllUsersCommand extends AbstractCommand {
 
@@ -35,7 +34,7 @@ public class AdminShowAllUsersCommand extends AbstractCommand {
 
     @Override
     public void execute() throws IOException {
-        if(!(serviceLocator.getUser() == null)){
+        if(!(Bootstrap.user == null)){
             System.out.println("[SHOW ALL PROFILE]");
             if (!(serviceLocator.getIUserService().findAll().isEmpty())){
                 for (User tmp : serviceLocator.getIUserService().findAll()) {

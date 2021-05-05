@@ -5,6 +5,7 @@ import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Task;
 import ru.tagirov.tm.init.ServiceLocator;
 import ru.tagirov.tm.util.DateUtil;
+import ru.tagirov.tm.util.TerminalService;
 import ru.tagirov.tm.util.UUIDUtil;
 
 import java.io.IOException;
@@ -39,9 +40,9 @@ public class TaskCreateCommand extends AbstractCommand {
         if (!(Bootstrap.user == null)) {
             System.out.println("[TASK CREATE]");
             System.out.println("ENTER NAME:");
-            name = reader.readLine();
+            name = TerminalService.service();
             System.out.println("ENTER DESCRIPTION:");
-            description = reader.readLine();
+            description = TerminalService.service();
             dateCreate = DateUtil.getDate();
             id = UUIDUtil.getUuid();
             serviceLocator.getITaskService().persist(new Task(id, name, description, dateCreate, Bootstrap.user.getId()));

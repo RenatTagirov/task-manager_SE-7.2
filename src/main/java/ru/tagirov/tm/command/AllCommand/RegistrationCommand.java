@@ -7,6 +7,7 @@ import ru.tagirov.tm.entity.User;
 import ru.tagirov.tm.init.ServiceLocator;
 import ru.tagirov.tm.util.DateUtil;
 import ru.tagirov.tm.util.Md5Util;
+import ru.tagirov.tm.util.TerminalService;
 import ru.tagirov.tm.util.UUIDUtil;
 
 import java.io.IOException;
@@ -41,22 +42,16 @@ public class RegistrationCommand extends AbstractCommand {
         if (Bootstrap.user == null) {
             System.out.println("[REGISTRATION]");
             System.out.println("YOU USER OR ADMIN?");
-            enterRole = reader.readLine();
+            enterRole = TerminalService.service();
             if (enterRole.equalsIgnoreCase("user") || enterRole.equalsIgnoreCase("admin")){
                 System.out.println("ENTER NAME:");
-                userName = reader.readLine();
+                userName = TerminalService.service();
                 System.out.println("ENTER LOGIN:");
-                login = reader.readLine();
+                login = TerminalService.service();
                 System.out.println("ENTER PASSWORD:");
-                password = Md5Util.getMd5(reader.readLine());
+                password = Md5Util.getMd5(TerminalService.service());
                 dateCreate = DateUtil.getDate();
                 id = UUIDUtil.getUuid();
-                System.out.println(id);
-                System.out.println(userName);
-                System.out.println(login);
-                System.out.println(password);
-                System.out.println(Role.getRole(enterRole).getTitle());
-                System.out.println(dateCreate);
                 serviceLocator.getIUserService().persist(new User(id, userName, login, password, Role.getRole(enterRole), dateCreate));
                 System.out.println("[OK]");
                 System.out.println();

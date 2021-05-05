@@ -5,6 +5,7 @@ import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Task;
 import ru.tagirov.tm.init.ServiceLocator;
 import ru.tagirov.tm.util.DateUtil;
+import ru.tagirov.tm.util.TerminalService;
 
 import java.io.IOException;
 
@@ -38,15 +39,15 @@ public class TaskUpdateCommand extends AbstractCommand {
         if (!(Bootstrap.user == null)) {
             System.out.println("[TASK UPDATE]");
             System.out.println("ENTER TASK NAME:");
-            name = reader.readLine();
+            name = TerminalService.service();
             System.out.println("WHAT YOU WANT TO UPDATE?");
             System.out.println("NAME OR DESCRIPTION:");
-            or = reader.readLine();
+            or = TerminalService.service();
             if (or.equalsIgnoreCase("name")) {
                 for (Task tmp : serviceLocator.getITaskService().findAll()) {
                     if (tmp.getName().equals(name) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                         System.out.println("ENTER NEW NAME:");
-                        tmp.setName(reader.readLine());
+                        tmp.setName(TerminalService.service());
                         tmp.setDateUpdate(DateUtil.getDate());
                     }
                 }
@@ -54,7 +55,7 @@ public class TaskUpdateCommand extends AbstractCommand {
                 for (Task tmp : serviceLocator.getITaskService().findAll()) {
                     if (tmp.getName().equals(name) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                         System.out.println("ENTER NEW DESCRIPTION:");
-                        tmp.setDescription(reader.readLine());
+                        tmp.setDescription(TerminalService.service());
                         tmp.setDateUpdate(DateUtil.getDate());
                     }
                 }

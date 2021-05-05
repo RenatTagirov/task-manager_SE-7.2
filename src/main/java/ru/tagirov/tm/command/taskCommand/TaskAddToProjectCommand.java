@@ -5,6 +5,7 @@ import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.entity.Task;
 import ru.tagirov.tm.init.ServiceLocator;
+import ru.tagirov.tm.util.TerminalService;
 
 import java.io.IOException;
 import java.util.Map;
@@ -39,9 +40,9 @@ public class TaskAddToProjectCommand extends AbstractCommand {
         if (!(Bootstrap.user == null)) {
             System.out.println("[TASK ADD TO PROJECT]");
             System.out.println("ENTER TASK NAME:");
-            nameTask = reader.readLine();
+            nameTask = TerminalService.service();
             System.out.println("ENTER PROJECT NAME:");
-            nameProject = reader.readLine();
+            nameProject = TerminalService.service();
             String id1 = null;
             String name1 = null;
             String description1 = null;

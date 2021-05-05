@@ -4,6 +4,7 @@ import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.init.ServiceLocator;
+import ru.tagirov.tm.util.TerminalService;
 
 import java.io.IOException;
 
@@ -37,7 +38,7 @@ public class TaskListToProjectCommand extends AbstractCommand {
         if (!(Bootstrap.user == null)) {
             System.out.println("[TASK LIST TO PROJECT]");
             System.out.println("ENTER PROJECT NAME:");
-            nameProject = reader.readLine();
+            nameProject = TerminalService.service();
             int count = 1;
             if (!(serviceLocator.getIProjectService().findAll().isEmpty())) {
                 for (Project tmp : serviceLocator.getIProjectService().findAll()) {

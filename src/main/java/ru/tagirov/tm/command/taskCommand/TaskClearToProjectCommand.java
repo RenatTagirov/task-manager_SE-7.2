@@ -4,6 +4,7 @@ import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.init.ServiceLocator;
+import ru.tagirov.tm.util.TerminalService;
 
 import java.io.IOException;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class TaskClearToProjectCommand extends AbstractCommand {
         if (!(Bootstrap.user == null)) {
             System.out.println("[TASK CLEAR TO PROJECT]");
             System.out.println("TASK PROJECT NAME:");
-            nameProject = reader.readLine();
+            nameProject = TerminalService.service();
             for (Project tmp : serviceLocator.getIProjectService().findAll()) {
                 if (tmp.getName().equals(nameProject) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                     serviceLocator.getIProjectService().remove(tmp.getId());

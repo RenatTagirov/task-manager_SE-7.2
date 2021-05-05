@@ -10,7 +10,6 @@ import java.util.Date;
 
 public abstract class AbstractCommand {
     public ServiceLocator serviceLocator;
-    protected BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     protected String id;
     protected String userName;
     protected String login;

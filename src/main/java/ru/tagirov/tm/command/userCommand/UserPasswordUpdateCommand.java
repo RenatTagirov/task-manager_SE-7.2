@@ -5,6 +5,7 @@ import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.User;
 import ru.tagirov.tm.init.ServiceLocator;
 import ru.tagirov.tm.util.Md5Util;
+import ru.tagirov.tm.util.TerminalService;
 
 import java.io.IOException;
 
@@ -40,10 +41,10 @@ public class UserPasswordUpdateCommand extends AbstractCommand {
         if(!(Bootstrap.user == null)){
                 System.out.println("[PASSWORD UPDATE]");
                 System.out.println("ENTER YOU OLD PASSWORD:");
-                password = Md5Util.getMd5(reader.readLine());
+                password = Md5Util.getMd5(TerminalService.service());
                 if(password.equals(Bootstrap.user.getPassword())){
                     System.out.println("ENTER YOU NEW PASSWORD:");
-                    newPassword = Md5Util.getMd5(reader.readLine());
+                    newPassword = Md5Util.getMd5(TerminalService.service());
                     for(User tmp : serviceLocator.getIUserService().findAll()){
                         if(tmp.getId().equals(Bootstrap.user.getId())){
                             tmp.setPassword(newPassword);

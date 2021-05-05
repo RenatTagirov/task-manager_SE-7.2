@@ -5,6 +5,7 @@ import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.init.ServiceLocator;
 import ru.tagirov.tm.util.DateUtil;
+import ru.tagirov.tm.util.TerminalService;
 
 import java.io.IOException;
 
@@ -38,15 +39,15 @@ public class ProjectUpdateCommand extends AbstractCommand {
         if(!(Bootstrap.user == null)) {
             System.out.println("[PROJECT UPDATE]");
             System.out.println("ENTER PROJECT NAME:");
-            name = reader.readLine();
+            name = TerminalService.service();
             System.out.println("WHAT YOU WANT TO UPDATE?");
             System.out.println("NAME OR DESCRIPTION:");
-            or = reader.readLine();
+            or = TerminalService.service();
             if (or.equalsIgnoreCase("name")) {
                 for (Project tmp : serviceLocator.getIProjectService().findAll()) {
                     if (tmp.getName().equals(name) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                         System.out.println("ENTER NEW NAME:");
-                        tmp.setName(reader.readLine());
+                        tmp.setName(TerminalService.service());
                         tmp.setDateUpdate(DateUtil.getDate());
                     }
                 }
@@ -56,7 +57,7 @@ public class ProjectUpdateCommand extends AbstractCommand {
                 for (Project tmp : serviceLocator.getIProjectService().findAll()) {
                     if (tmp.getName().equals(name) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                         System.out.println("ENTER NEW DESCRIPTION:");
-                        tmp.setDescription(reader.readLine());
+                        tmp.setDescription(TerminalService.service());
                         tmp.setDateUpdate(DateUtil.getDate());
                     }
                 }

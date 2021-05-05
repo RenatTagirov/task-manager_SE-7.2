@@ -5,6 +5,7 @@ import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.entity.User;
 import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.init.ServiceLocator;
+import ru.tagirov.tm.util.TerminalService;
 
 import java.io.IOException;
 
@@ -38,13 +39,13 @@ public class AdminShowTaskToProjectToUserCommand extends AbstractCommand {
         if (!(Bootstrap.user == null)) {
             System.out.println("[SHOW PROJECTS TO USER]");
             System.out.println("[ENTER NAME PROFILE]");
-            name = reader.readLine();
+            name = TerminalService.service();
             for (User tmp : serviceLocator.getIUserService().findAll()) {
                 if (tmp.getName().equals(name)) {
                     for (Project tmp1 : serviceLocator.getIProjectService().findAll()) {
                         if (!(tmp1.taskListToProject.isEmpty())) {
                             System.out.println("ENTER PROJECT NAME:");
-                            nameProject = reader.readLine();
+                            nameProject = TerminalService.service();
                             int count = 1;
                             if (tmp1.getName().equals(nameProject) && tmp1.getUserId().equals(tmp.getId())) {
                                 for (int i = 0; i < tmp1.taskListToProject.size(); i++) {

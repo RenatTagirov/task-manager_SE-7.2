@@ -4,6 +4,7 @@ import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.init.ServiceLocator;
+import ru.tagirov.tm.util.TerminalService;
 
 import java.io.IOException;
 
@@ -37,7 +38,7 @@ public class ProjectRemoveCommand extends AbstractCommand {
         if(!(Bootstrap.user == null)) {
             System.out.println("[PROJECT REMOVE]");
             System.out.println("ENTER PROJECT NAME:");
-            name = reader.readLine();
+            name = TerminalService.service();
             for (Project tmp : serviceLocator.getIProjectService().findAll()) {
                 if (tmp.getName().equals(name) && tmp.getUserId().equals(Bootstrap.user.getId())) {
                     serviceLocator.getIProjectService().remove(tmp.getId());

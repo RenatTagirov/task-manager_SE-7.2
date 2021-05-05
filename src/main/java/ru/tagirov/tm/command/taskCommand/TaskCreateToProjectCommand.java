@@ -6,6 +6,7 @@ import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.entity.Task;
 import ru.tagirov.tm.init.ServiceLocator;
 import ru.tagirov.tm.util.DateUtil;
+import ru.tagirov.tm.util.TerminalService;
 import ru.tagirov.tm.util.UUIDUtil;
 
 import java.io.IOException;
@@ -40,11 +41,11 @@ public class TaskCreateToProjectCommand extends AbstractCommand {
         if (!(Bootstrap.user == null)) {
             System.out.println("[TASK CREATE TO PROJECT]");
             System.out.println("ENTER PROJECT NAME:");
-            nameProject = reader.readLine();
+            nameProject = TerminalService.service();
             System.out.println("ENTER NAME:");
-            nameTask = reader.readLine();
+            nameTask = TerminalService.service();
             System.out.println("ENTER DESCRIPTION:");
-            description = reader.readLine();
+            description = TerminalService.service();
             dateCreate = DateUtil.getDate();
             id = UUIDUtil.getUuid();
             for (Project tmp : serviceLocator.getIProjectService().findAll()) {

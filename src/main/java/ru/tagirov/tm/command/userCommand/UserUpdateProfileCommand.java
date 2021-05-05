@@ -5,6 +5,7 @@ import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.User;
 import ru.tagirov.tm.init.ServiceLocator;
 import ru.tagirov.tm.util.DateUtil;
+import ru.tagirov.tm.util.TerminalService;
 
 import java.io.IOException;
 import java.util.Date;
@@ -41,13 +42,13 @@ public class UserUpdateProfileCommand extends AbstractCommand {
             System.out.println("[UPDATE PROFILE]");
             System.out.println("WHAT YOU WANT TO UPDATE?");
             System.out.println("NAME OR LOGIN:");
-            or = reader.readLine();
+            or = TerminalService.service();
             if(or.equalsIgnoreCase("name") || or.equalsIgnoreCase("login")){
                 if (or.equalsIgnoreCase("name")){
                     for(User tmp : serviceLocator.getIUserService().findAll()){
                         if(tmp.getId().equals(Bootstrap.user.getId())){
                             System.out.println("ENTER NEW NAME:");
-                            userName = reader.readLine();
+                            userName = TerminalService.service();
                             tmp.setName(userName);
                             tmp.setDateUpdate(DateUtil.getDate());
                             Bootstrap.user.setName(userName);
@@ -60,7 +61,7 @@ public class UserUpdateProfileCommand extends AbstractCommand {
                     for(User tmp : serviceLocator.getIUserService().findAll()){
                         if(tmp.getId().equals(Bootstrap.user.getId())){
                             System.out.println("ENTER NEW LOGIN:");
-                            login= reader.readLine();
+                            login= TerminalService.service();
                             tmp.setLogin(login);
                             tmp.setDateUpdate(DateUtil.getDate());
                             Bootstrap.user.setLogin(login);

@@ -4,6 +4,7 @@ import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.User;
 import ru.tagirov.tm.init.ServiceLocator;
+import ru.tagirov.tm.util.TerminalService;
 
 import java.io.IOException;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class AdminShowUserCommand extends AbstractCommand {
         if(!(Bootstrap.user == null)){
             System.out.println("[SHOW PROFILE]");
             System.out.println("[ENTER NAME PROFILE]");
-            name = reader.readLine();
+            name = TerminalService.service();
             for(User tmp : serviceLocator.getIUserService().findAll()){
                 if(tmp.getName().equals(name)){
                     if(tmp.getDateCreate() == null){

@@ -18,10 +18,9 @@ import ru.tagirov.tm.service.IUserService;
 import ru.tagirov.tm.service.impl.ProjectService;
 import ru.tagirov.tm.service.impl.TaskService;
 import ru.tagirov.tm.service.impl.UserService;
+import ru.tagirov.tm.util.TerminalService;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 
 public class Bootstrap implements ServiceLocator{
@@ -42,14 +41,13 @@ public class Bootstrap implements ServiceLocator{
 
     public static Role role = Role.USER;
     public static User user;
-    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     String str;
 
 
     public void start() throws IOException,InstantiationException, IllegalAccessException {
         init();
         System.out.println("***WELCOME TO TASK MANAGER***");
-        while (!(str = reader.readLine()).equalsIgnoreCase("Exit")) {
+        while (!(str = TerminalService.service()).equalsIgnoreCase("Exit")) {
             if (user == null) {
                 for (AbstractCommand tmp : getCommands()) {
                     if (tmp.getName().equalsIgnoreCase(str) && tmp.getRoleCommand().equals("all")) {

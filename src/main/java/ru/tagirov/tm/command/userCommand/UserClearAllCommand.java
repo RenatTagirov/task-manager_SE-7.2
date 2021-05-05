@@ -5,6 +5,7 @@ import ru.tagirov.tm.command.AbstractCommand;
 import ru.tagirov.tm.entity.Project;
 import ru.tagirov.tm.entity.User;
 import ru.tagirov.tm.init.ServiceLocator;
+import ru.tagirov.tm.util.TerminalService;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -49,7 +50,7 @@ public class UserClearAllCommand extends AbstractCommand {
                 System.out.println();
             } else if (Bootstrap.user.getRole().getTitle().equals("admin")) {
                 System.out.println("ENTER PROFILE NAME:");
-                name = reader.readLine();
+                name = TerminalService.service();
                 for(User tmp : serviceLocator.getIUserService().findAll()){
                     if (tmp.getName().equals(name)){
                         for (Project tmp1 : serviceLocator.getIProjectService().findAll()) {

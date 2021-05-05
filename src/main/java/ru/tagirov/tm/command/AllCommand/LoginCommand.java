@@ -5,6 +5,7 @@ import ru.tagirov.tm.init.Bootstrap;
 import ru.tagirov.tm.entity.User;
 import ru.tagirov.tm.init.ServiceLocator;
 import ru.tagirov.tm.util.Md5Util;
+import ru.tagirov.tm.util.TerminalService;
 
 import java.io.IOException;
 
@@ -38,9 +39,9 @@ public class LoginCommand extends AbstractCommand {
         if(Bootstrap.user == null){
             System.out.println("[LOGIN]");
             System.out.println("ENTER YOU LOGIN:");
-            login = reader.readLine();
+            login = TerminalService.service();
             System.out.println("ENTER YOU PASSWORD:");
-            password = Md5Util.getMd5(reader.readLine());
+            password = Md5Util.getMd5(TerminalService.service());
             for (User tmp : serviceLocator.getIUserService().findAll()) {
                 if (tmp.getLogin().equals(login) && tmp.getPassword().equals(password)) {
                     Bootstrap.user = tmp;
